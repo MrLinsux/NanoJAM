@@ -16,6 +16,6 @@ public class Ground : MonoBehaviour, IPointerDownHandler
         var color = _outline.color;
         color.a = 0f;
         _outline.color = color;
-        _graph.selectedNode = null;
+        _graph.SelectedNode = null;
     }
 }

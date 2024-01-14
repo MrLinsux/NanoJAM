@@ -24,11 +24,31 @@ public class Graph : MonoBehaviour
     List<int> firstWaysInspector;
     [SerializeField]
     List<int> secondWaysInspector;
-    public GraphNode selectedNode;
+    GraphNode selectedNode;
+    public GraphNode SelectedNode { get { return selectedNode; } set { selectedNode = value; if (value == null) waitSecondNode = false; } }
+    bool waitSecondNode = false;
+    public bool WaitSecondNode {  get { return waitSecondNode; } }
 
-    private void Start()
+    int jamNumber = 0;
+    public int JamNumber { get { return jamNumber; } }
+    public void JamNumberIncrease()
+    {
+        jamNumber++;
+        Debug.Log("Number of JAM is " + jamNumber);
+    }
+    public void JamNumberDecrease()
+    {
+        jamNumber--;
+        Debug.Log("Number of JAM is " + jamNumber);
+    }
+
+    public void Init()
     {
         nodes = transform.GetComponentsInChildren<GraphNode>();
+        foreach (GraphNode node in nodes)
+        {
+            node.Init();
+        }
         _vertices = nodes.Length;
         _wayList = new List<int>[_vertices];
         for(int i = 0; i < _vertices; i++)
@@ -44,10 +64,40 @@ public class Graph : MonoBehaviour
 
     private void Update()
     {
-        if (selectedNode != null && Input.GetKeyDown(KeyCode.E) && selectedNode.State == GraphNode.NodeStates.PeanutButter)
+        if (selectedNode != null)
         {
-            selectedNode.SetAsJam();
+            if (Input.GetKeyDown(KeyCode.R) && selectedNode.State == GraphNode.NodeStates.PeanutButter)
+            {
+                // node is jam
+                selectedNode.SetAsJam();
+            }
+            if (Input.GetKeyDown(KeyCode.S) && selectedNode.State == GraphNode.NodeStates.Jammed)
+            {
+                selectedNode.SetAsShield();
+            }
+            if(Input.GetKeyDown(KeyCode.W) && (int)selectedNode.State > 1)
+            {
+                waitSecondNode = true;
+            }
         }
+    }
+
+    public void JoinNodeToSelect(GraphNode node)
+    {
+        if(selectedNode != null)
+        {
+            if ((int)selectedNode.State > 1 && (int)node.State > 1)
+            {
+                int sIndex = GetNodeIndex(selectedNode);
+                int nIndex = GetNodeIndex(node);
+                if (!_wayList[sIndex].Contains(nIndex) && !_wayList[nIndex].Contains(sIndex))
+                {
+                    AddEdge(sIndex, nIndex);
+                    DrawGraph();
+                }
+            }
+        }
+        waitSecondNode = false;
     }
 
     public GraphNode GetNode(int i)
