@@ -75,7 +75,7 @@ public class Graph : MonoBehaviour
             {
                 selectedNode.SetAsShield();
             }
-            if(Input.GetKeyDown(KeyCode.W) && (int)selectedNode.State > 1)
+            if(Input.GetKeyDown(KeyCode.W))
             {
                 waitSecondNode = true;
             }

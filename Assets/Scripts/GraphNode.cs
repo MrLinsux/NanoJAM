@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class GraphNode : MonoBehaviour, IPointerDownHandler
 {
-    public enum NodeStates { Toaster, PeanutButter, Jammed, Shielded }
+    public enum NodeStates { None, Toaster, PeanutButter, Jam, Jammed, Shielded }
     [SerializeField]
     Color[] stateColors;
 
@@ -27,15 +27,21 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
     public void SetAsJam()
     {
         _graph.FreeNode(_graph.GetNodeIndex(_graph.SelectedNode));
+        state = NodeStates.Jam;
+        _sprite.color = stateColors[(int)NodeStates.Jam];
+        _graph.JamNumberIncrease();
+    }
+    public void SetAsJammed()
+    {
         state = NodeStates.Jammed;
-        _sprite.color = stateColors[2];
+        _sprite.color = stateColors[(int)NodeStates.Jammed];
         _graph.JamNumberIncrease();
     }
 
     public void SetAsShield()
     {
         state = NodeStates.Shielded;
-        _sprite.color = stateColors[3];
+        _sprite.color = stateColors[(int)NodeStates.Shielded];
     }
 
     public void OnPointerDown(PointerEventData eventData)
