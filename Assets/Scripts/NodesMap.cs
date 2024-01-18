@@ -105,7 +105,7 @@ public class NodesMap : MonoBehaviour
         {
             int sIndex = GetNodeIndex(selectedNode);
             int nIndex = GetNodeIndex(node);
-            if (!mainGraph.GetNeibours(sIndex).Contains(nIndex) && !mainGraph.GetNeibours(nIndex).Contains(sIndex))
+            if (!mainGraph.GetNeighbor(sIndex).Contains(nIndex) && !mainGraph.GetNeighbor(nIndex).Contains(sIndex))
             {
                 mainGraph.AddEdge(sIndex, nIndex);
                 DrawGraph();
@@ -135,7 +135,7 @@ public class NodesMap : MonoBehaviour
         if (nodeIndex < 0 || nodeIndex > mainGraph.Vertices - 1)
             throw new ArgumentOutOfRangeException();
 
-        mainGraph.GetNeibours(nodeIndex).Clear();
+        mainGraph.GetNeighbor(nodeIndex).Clear();
         for (int i = 0; i < mainGraph.Vertices; i++)
         {
             mainGraph.RemoveEdge(i, nodeIndex);
@@ -156,11 +156,11 @@ public class NodesMap : MonoBehaviour
 
         for(int i = 0; i < mainGraph.Vertices; i++)
         {
-            for (int j = 0; j < mainGraph.GetNeibours(i).Count; j++)
+            for (int j = 0; j < mainGraph.GetNeighbor(i).Count; j++)
             {
                 LineRenderer line = Instantiate(wayPref, Vector3.zero, Quaternion.identity, transform).GetComponent<LineRenderer>();
                 line.SetPosition(0, GetNode(i).transform.position);
-                line.SetPosition(1, GetNode(mainGraph.GetNeibours(i)[j]).transform.position);
+                line.SetPosition(1, GetNode(mainGraph.GetNeighbor(i)[j]).transform.position);
             }
         }
     }

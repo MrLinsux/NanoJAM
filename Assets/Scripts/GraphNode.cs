@@ -35,13 +35,11 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
         _graph.FreeNode(_graph.GetNodeIndex(_graph.SelectedNode));
         state = NodeStates.JamSandwich;
         _sprite.color = stateColors[(int)NodeStates.JamSandwich];
-        _graph.JamNumberIncrease();
     }
     public void SetAsJammed()
     {
         state = NodeStates.Jammed;
         _sprite.color = stateColors[(int)NodeStates.Jammed];
-        _graph.JamNumberIncrease();
     }
 
     public void SetAsShield()
