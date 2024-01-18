@@ -8,6 +8,7 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
     public enum NodeStates { None, Toaster, PeanutButter, JamSandwich, Jammed, Shielded, Bread }
     [SerializeField]
     Color[] stateColors;
+    public int NodeIndex { get { return _graph.GetNodeIndex(this); } }
 
     [SerializeField]
     private NodeStates state;
@@ -35,22 +36,25 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
         _graph.FreeNode(_graph.GetNodeIndex(_graph.SelectedNode));
         state = NodeStates.JamSandwich;
         _sprite.color = stateColors[(int)NodeStates.JamSandwich];
+        _graph.CurrentJamNumberDecrease();
     }
     public void SetAsJammed()
     {
         state = NodeStates.Jammed;
         _sprite.color = stateColors[(int)NodeStates.Jammed];
+        _graph.CurrentJamNumberDecrease();
     }
 
     public void SetAsShield()
     {
         state = NodeStates.Shielded;
         _sprite.color = stateColors[(int)NodeStates.Shielded];
+        _graph.CurrentJamNumberDecrease();
     }
     public void SetAsButter()
     {
         if(IsJamSandwich)
-            _graph.JamNumberDecrease();
+            _graph.MaxJamNumberDecrease();
         state = NodeStates.PeanutButter;
         _sprite.color = stateColors[(int)NodeStates.PeanutButter];
     }
@@ -61,7 +65,7 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
         {
             _graph.JoinNodeToSelect(this);
         }
-        else
+        else if(_graph.MainGraph.BreadthFirstSearch(0, NodeIndex))  // 0 - is toster
         {
             var color = _outline.color;
             color.a = 0.6f;

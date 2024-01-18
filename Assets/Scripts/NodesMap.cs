@@ -31,17 +31,22 @@ public class NodesMap : MonoBehaviour
     public bool WaitSecondNode {  get { return waitSecondNode; } }
 
     [SerializeField]
-    int jamNumber = 0;
-    public int JamNumber { get { return jamNumber; } }
-    public void JamNumberIncrease()
-    {
-        jamNumber++;
-    }
-    public void JamNumberDecrease()
-    {
-        jamNumber--;
-    }
+    int maxJamNumber = 0;
+    public int MaxJamNumber { get { return maxJamNumber; } }
+    public void MaxJamNumberIncrease() => maxJamNumber++;
+    public void MaxJamNumberDecrease() => maxJamNumber--;
 
+    [SerializeField]
+    int currentJamNumber = 0;
+    public int CurrentJamNumber { get { return currentJamNumber; } private set { currentJamNumber = value; if (currentJamNumber <= 0) NextTurn(); } }
+    public void CurrentJamNumberIncrease() => currentJamNumber++;
+    public void CurrentJamNumberDecrease() => currentJamNumber--;
+
+    public void NextTurn()
+    {
+        CurrentJamNumber = MaxJamNumber;
+        Debug.Log("Next Turn");
+    }
     public void Init()
     {
         nodes = transform.GetComponentsInChildren<GraphNode>();
@@ -71,6 +76,7 @@ public class NodesMap : MonoBehaviour
                 if(selectedNode.IsBread)
                 {
                     selectedNode.SetAsJamSandwich();
+                    MaxJamNumberIncrease();
                 }
             }
             if (Input.GetKeyDown(KeyCode.S))
@@ -78,6 +84,7 @@ public class NodesMap : MonoBehaviour
                 if (selectedNode.IsBread)
                 {
                     selectedNode.SetAsJamSandwich();
+                    MaxJamNumberIncrease();
                 }
                 else if(selectedNode.IsJammed || selectedNode.IsPeanutButter)
                 {
@@ -89,7 +96,11 @@ public class NodesMap : MonoBehaviour
                 if(!selectedNode.IsJamSandwich)
                     waitSecondNode = true;
             }
-        }
+            if(Input.GetKeyDown(KeyCode.D))
+            {
+                NextTurn();
+            }
+        }   
     }
 
     public void JoinNodeToSelect(GraphNode node)
@@ -109,6 +120,7 @@ public class NodesMap : MonoBehaviour
             {
                 mainGraph.AddEdge(sIndex, nIndex);
                 DrawGraph();
+                CurrentJamNumberDecrease();
             }
         }
         waitSecondNode = false;

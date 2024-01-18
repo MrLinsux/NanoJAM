@@ -1,11 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Build;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Graph
@@ -21,6 +15,8 @@ public class Graph
 
     public List<int> GetNeighbor(int i)
     {
+        if (i < 0 || i > _vertices - 1)
+            throw new ArgumentOutOfRangeException();
         return _edgesList[i];
     }
 
@@ -40,13 +36,22 @@ public class Graph
         _edgesList[v].Remove(w);
     }
 
-    public bool BreadthFirstSearch(int startVert, int endVert, List<bool> whoIsVisited = null)
+    public bool BreadthFirstSearch(int startVert, int endVert, List<bool> vertIsVisited = null)
     {
-        List<bool> vertIsVisited = new List<bool>();
-        for(int i = 0; i < Vertices; i++)
+        if (startVert == endVert)
+            return true;
+
+        if (vertIsVisited == null)
         {
-            vertIsVisited.Add(false);
+            vertIsVisited = new List<bool>();
+            for (int i = 0; i < Vertices; i++)
+            {
+                vertIsVisited.Add(false);
+            }
         }
+
+        if (vertIsVisited[startVert])
+            return false;
 
         foreach(var neighbor in GetNeighbor(startVert))
         {
