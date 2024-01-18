@@ -350,7 +350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1382320650205123609, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: state
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7011566519664260644, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_Name
@@ -589,7 +589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1382320650205123609, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: state
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7011566519664260644, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_Name
@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 1421078299}
   - component: {fileID: 1421078298}
   m_Layer: 0
-  m_Name: Graph
+  m_Name: NodesMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -638,6 +638,7 @@ MonoBehaviour:
   wayPref: {fileID: 1787325307656521108, guid: f467e68290f57f044b6c45baeecd4922, type: 3}
   firstWaysInspector: 0000000000000000000000000300000003000000
   secondWaysInspector: 0100000002000000030000000100000002000000
+  jamNumber: 0
 --- !u!4 &1421078299
 Transform:
   m_ObjectHideFlags: 0
@@ -858,7 +859,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1382320650205123609, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: state
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7011566519664260644, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_Name

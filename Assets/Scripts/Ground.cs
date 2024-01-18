@@ -9,7 +9,7 @@ public class Ground : MonoBehaviour, IPointerDownHandler
     [SerializeField]
     SpriteRenderer _outline;
     [SerializeField]
-    Graph _graph;
+    NodesMap _graph;
 
     public void OnPointerDown(PointerEventData eventData)
     {

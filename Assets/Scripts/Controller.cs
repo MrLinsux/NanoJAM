@@ -5,7 +5,7 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
     [SerializeField]
-    Graph graph;
+    NodesMap graph;
 
     private void Awake()
     {

@@ -5,30 +5,36 @@ using UnityEngine.EventSystems;
 
 public class GraphNode : MonoBehaviour, IPointerDownHandler
 {
-    public enum NodeStates { None, Toaster, PeanutButter, Jam, Jammed, Shielded }
+    public enum NodeStates { None, Toaster, PeanutButter, JamSandwich, Jammed, Shielded, Bread }
     [SerializeField]
     Color[] stateColors;
 
     [SerializeField]
     private NodeStates state;
     public NodeStates State {  get { return state; } }
+    public bool IsToaster { get { return State == NodeStates.Toaster; } }
+    public bool IsPeanutButter { get { return State == NodeStates.PeanutButter; } }
+    public bool IsJamSandwich { get { return State == NodeStates.JamSandwich; } }
+    public bool IsJammed { get { return State == NodeStates.Jammed; } }
+    public bool IsShielded { get { return State == NodeStates.Shielded; } }
+    public bool IsBread { get { return State == NodeStates.Bread; } }
     SpriteRenderer _sprite;
     SpriteRenderer _outline;
-    Graph _graph;
+    NodesMap _graph;
 
     public void Init()
     {
-        _graph = transform.parent.GetComponent<Graph>();
+        _graph = transform.parent.GetComponent<NodesMap>();
         _sprite = GetComponent<SpriteRenderer>();
         _sprite.color = stateColors[(int)state];
         _outline = GameObject.Find("Outline").GetComponent<SpriteRenderer>();
     }
 
-    public void SetAsJam()
+    public void SetAsJamSandwich()
     {
         _graph.FreeNode(_graph.GetNodeIndex(_graph.SelectedNode));
-        state = NodeStates.Jam;
-        _sprite.color = stateColors[(int)NodeStates.Jam];
+        state = NodeStates.JamSandwich;
+        _sprite.color = stateColors[(int)NodeStates.JamSandwich];
         _graph.JamNumberIncrease();
     }
     public void SetAsJammed()
@@ -43,10 +49,17 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
         state = NodeStates.Shielded;
         _sprite.color = stateColors[(int)NodeStates.Shielded];
     }
+    public void SetAsButter()
+    {
+        if(IsJamSandwich)
+            _graph.JamNumberDecrease();
+        state = NodeStates.PeanutButter;
+        _sprite.color = stateColors[(int)NodeStates.PeanutButter];
+    }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (_graph.WaitSecondNode)
+        if (_graph.WaitSecondNode && !IsJamSandwich)
         {
             _graph.JoinNodeToSelect(this);
         }
