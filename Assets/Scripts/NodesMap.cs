@@ -12,6 +12,9 @@ public class NodesMap : MonoBehaviour
 {
     Graph mainGraph;
     public Graph MainGraph { get { return mainGraph; } }
+    [SerializeField]
+    Controller controller;
+    public Controller Controller { get { return controller; } }
 
     [SerializeField]
     GraphNode[] nodes;
@@ -39,14 +42,35 @@ public class NodesMap : MonoBehaviour
     [SerializeField]
     int currentJamNumber = 0;
     public int CurrentJamNumber { get { return currentJamNumber; } private set { currentJamNumber = value; if (currentJamNumber <= 0) NextTurn(); } }
-    public void CurrentJamNumberIncrease() => currentJamNumber++;
-    public void CurrentJamNumberDecrease() => currentJamNumber--;
+    public void CurrentJamNumberIncrease() => CurrentJamNumber++;
+    public void CurrentJamNumberDecrease() => CurrentJamNumber--;
 
     public void NextTurn()
     {
+        ButterTurn();
         CurrentJamNumber = MaxJamNumber;
         Debug.Log("Next Turn");
     }
+
+    public void ButterTurn()
+    {
+        var butterNodes = new List<GraphNode>();
+        for(int i = 0; i < nodes.Length; i++)
+        {
+            if(GetNode(i).IsPeanutButter)
+                butterNodes.Add(GetNode(i));
+        }
+
+        for(int i = 0; i < butterNodes.Count; i++)
+        {
+            var neighbors = mainGraph.GetNeighbors(butterNodes[i].NodeIndex).Where(e => !GetNode(e).IsPeanutButter).ToList();
+            if(neighbors != null && neighbors.Count() > 0)
+            {
+                GetNode(neighbors[0]).SetAsButter();
+            }
+        }
+    }
+
     public void Init()
     {
         nodes = transform.GetComponentsInChildren<GraphNode>();
@@ -62,6 +86,7 @@ public class NodesMap : MonoBehaviour
         for(int i = 0; i < firstWaysInspector.Count; i++)
         {
             _wayList[firstWaysInspector[i]].Add(secondWaysInspector[i]);
+            _wayList[secondWaysInspector[i]].Add(firstWaysInspector[i]);
         }
         mainGraph = new Graph(nodes.Length, _wayList);
         DrawGraph();
@@ -71,9 +96,9 @@ public class NodesMap : MonoBehaviour
     {
         if (selectedNode != null)
         {
-            if(Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                if(selectedNode.IsBread)
+                if (selectedNode.IsBread)
                 {
                     selectedNode.SetAsJamSandwich();
                     MaxJamNumberIncrease();
@@ -86,21 +111,21 @@ public class NodesMap : MonoBehaviour
                     selectedNode.SetAsJamSandwich();
                     MaxJamNumberIncrease();
                 }
-                else if(selectedNode.IsJammed || selectedNode.IsPeanutButter)
+                else if (selectedNode.IsJammed || selectedNode.IsPeanutButter)
                 {
                     selectedNode.SetAsShield();
                 }
             }
             if (Input.GetKeyDown(KeyCode.W))
             {
-                if(!selectedNode.IsJamSandwich)
+                if (!selectedNode.IsJamSandwich)
                     waitSecondNode = true;
             }
-            if(Input.GetKeyDown(KeyCode.D))
-            {
-                NextTurn();
-            }
-        }   
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            NextTurn();
+        }
     }
 
     public void JoinNodeToSelect(GraphNode node)
@@ -116,7 +141,7 @@ public class NodesMap : MonoBehaviour
         {
             int sIndex = GetNodeIndex(selectedNode);
             int nIndex = GetNodeIndex(node);
-            if (!mainGraph.GetNeighbor(sIndex).Contains(nIndex) && !mainGraph.GetNeighbor(nIndex).Contains(sIndex))
+            if (!mainGraph.GetNeighbors(sIndex).Contains(nIndex) && !mainGraph.GetNeighbors(nIndex).Contains(sIndex))
             {
                 mainGraph.AddEdge(sIndex, nIndex);
                 DrawGraph();
@@ -147,7 +172,7 @@ public class NodesMap : MonoBehaviour
         if (nodeIndex < 0 || nodeIndex > mainGraph.Vertices - 1)
             throw new ArgumentOutOfRangeException();
 
-        mainGraph.GetNeighbor(nodeIndex).Clear();
+        mainGraph.GetNeighbors(nodeIndex).Clear();
         for (int i = 0; i < mainGraph.Vertices; i++)
         {
             mainGraph.RemoveEdge(i, nodeIndex);
@@ -168,11 +193,11 @@ public class NodesMap : MonoBehaviour
 
         for(int i = 0; i < mainGraph.Vertices; i++)
         {
-            for (int j = 0; j < mainGraph.GetNeighbor(i).Count; j++)
+            for (int j = 0; j < mainGraph.GetNeighbors(i).Count; j++)
             {
                 LineRenderer line = Instantiate(wayPref, Vector3.zero, Quaternion.identity, transform).GetComponent<LineRenderer>();
                 line.SetPosition(0, GetNode(i).transform.position);
-                line.SetPosition(1, GetNode(mainGraph.GetNeighbor(i)[j]).transform.position);
+                line.SetPosition(1, GetNode(mainGraph.GetNeighbors(i)[j]).transform.position);
             }
         }
     }

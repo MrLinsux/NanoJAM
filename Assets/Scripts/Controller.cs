@@ -5,10 +5,15 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
     [SerializeField]
-    NodesMap graph;
+    NodesMap map;
 
     private void Awake()
     {
-        graph.Init();
+        map.Init();
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("You lose!");
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Graph
@@ -13,10 +14,28 @@ public class Graph
         _vertices = vertNum; _edgesList = edges;
     }
 
-    public List<int> GetNeighbor(int i)
+    public List<int> GetNeighbors(int i)
     {
         if (i < 0 || i > _vertices - 1)
             throw new ArgumentOutOfRangeException();
+
+        //var neighbors = new List<int>(_edgesList[i]);
+        //for(int j = 0; j < i; j++)
+        //{
+        //    if (_edgesList[j].Contains(i))
+        //    {
+        //        neighbors.Add(j);
+        //    }
+        //}
+        //for (int j = i+1; j < _vertices; j++)
+        //{
+        //    if (_edgesList[j].Contains(i))
+        //    {
+        //        neighbors.Add(j);
+        //    }
+        //}
+
+        //return neighbors;
         return _edgesList[i];
     }
 
@@ -25,6 +44,7 @@ public class Graph
         if ((v < 0 || v > _vertices - 1) || (w < 0 || w > _vertices - 1))
             throw new ArgumentOutOfRangeException();
 
+        _edgesList[w].Add(v);
         _edgesList[v].Add(w);
     }
 
@@ -33,6 +53,7 @@ public class Graph
         if ((v < 0 || v > _vertices - 1))
             throw new ArgumentOutOfRangeException();
 
+        _edgesList[w].Remove(v);
         _edgesList[v].Remove(w);
     }
 
@@ -52,8 +73,9 @@ public class Graph
 
         if (vertIsVisited[startVert])
             return false;
+        vertIsVisited[startVert] = true;
 
-        foreach(var neighbor in GetNeighbor(startVert))
+        foreach(var neighbor in GetNeighbors(startVert))
         {
             if (!vertIsVisited[neighbor])
             {
