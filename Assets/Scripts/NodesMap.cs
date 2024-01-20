@@ -63,7 +63,7 @@ public class NodesMap : MonoBehaviour
 
         for(int i = 0; i < butterNodes.Count; i++)
         {
-            var neighbors = mainGraph.GetNeighbors(butterNodes[i].NodeIndex).Where(e => !GetNode(e).IsPeanutButter).ToList();
+            var neighbors = mainGraph.GetNeighbors(butterNodes[i].NodeIndex).Where(e => !GetNode(e).IsPeanutButter && !GetNode(e).IsShielded).ToList();
             if(neighbors != null && neighbors.Count() > 0)
             {
                 GetNode(neighbors[0]).SetAsButter();
@@ -108,7 +108,7 @@ public class NodesMap : MonoBehaviour
             {
                 if (selectedNode.IsBread)
                 {
-                    selectedNode.SetAsJamSandwich();
+                    selectedNode.SetAsJammed();
                     MaxJamNumberIncrease();
                 }
                 else if (selectedNode.IsJammed || selectedNode.IsPeanutButter)
@@ -132,21 +132,18 @@ public class NodesMap : MonoBehaviour
     {
         if (selectedNode == null)
             throw new ArgumentNullException();
-        if(node == null)
+        if (node == null)
             throw new ArgumentNullException();
         if (node == selectedNode)
             throw new ArgumentException();
 
-        if ((int)selectedNode.State > 1 && (int)node.State > 1)
+        int sIndex = GetNodeIndex(selectedNode);
+        int nIndex = GetNodeIndex(node);
+        if (!mainGraph.GetNeighbors(sIndex).Contains(nIndex) && !mainGraph.GetNeighbors(nIndex).Contains(sIndex))
         {
-            int sIndex = GetNodeIndex(selectedNode);
-            int nIndex = GetNodeIndex(node);
-            if (!mainGraph.GetNeighbors(sIndex).Contains(nIndex) && !mainGraph.GetNeighbors(nIndex).Contains(sIndex))
-            {
-                mainGraph.AddEdge(sIndex, nIndex);
-                DrawGraph();
-                CurrentJamNumberDecrease();
-            }
+            mainGraph.AddEdge(sIndex, nIndex);
+            DrawGraph();
+            CurrentJamNumberDecrease();
         }
         waitSecondNode = false;
     }

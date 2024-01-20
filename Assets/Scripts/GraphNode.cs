@@ -34,9 +34,10 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
 
     public void SetAsJamSandwich()
     {
-        //_map.FreeNode(_map.GetNodeIndex(_map.SelectedNode));
+        _map.FreeNode(_map.GetNodeIndex(_map.SelectedNode));
         state = NodeStates.JamSandwich;
         _sprite.color = stateColors[(int)NodeStates.JamSandwich];
+        _map.MaxJamNumberIncrease();
         _map.CurrentJamNumberDecrease();
     }
     public void SetAsJammed()
@@ -54,15 +55,16 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
     }
     public void SetAsButter()
     {
-        state = NodeStates.PeanutButter;
-        _sprite.color = stateColors[(int)NodeStates.PeanutButter];
-        if (IsJamSandwich)
+        if (IsToaster)
         {
-
-        }
-        else if (IsToaster)
-        {
+            state = NodeStates.PeanutButter;
+            _sprite.color = stateColors[(int)NodeStates.PeanutButter];
             _map.Controller.GameOver();
+        }
+        else
+        {
+            state = NodeStates.PeanutButter;
+            _sprite.color = stateColors[(int)NodeStates.PeanutButter];
         }
     }
 
