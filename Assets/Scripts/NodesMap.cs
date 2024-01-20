@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor.Build;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static GraphNode;
 
 public class NodesMap : MonoBehaviour
 {
@@ -29,9 +30,34 @@ public class NodesMap : MonoBehaviour
     [SerializeField]
     List<int> secondWaysInspector;
     GraphNode selectedNode;
-    public GraphNode SelectedNode { get { return selectedNode; } set { selectedNode = value; if (value == null) waitSecondNode = false; } }
-    bool waitSecondNode = false;
-    public bool WaitSecondNode {  get { return waitSecondNode; } }
+    GraphNode secondSelectedNode;
+    public GraphNode SecondSelectNode
+    { 
+        get { return secondSelectedNode; } 
+        set { secondSelectedNode = value; }
+    }
+    [SerializeField]
+    NodeChangeHint nodeHintPanel;
+    LineRenderer newWay;
+    public LineRenderer NewWay { get { return newWay; } }
+    public void StopDrawingNewWay()
+    {
+        Destroy(newWay.gameObject); newWay = null;
+        if (secondSelectedNode != null && secondSelectedNode != selectedNode)
+        {
+            JoinNodeToSelect(secondSelectedNode);
+            selectedNode.SetActiveOutline(false);
+            secondSelectedNode.OnPointerEnter(null);
+            secondSelectedNode = null;
+        }
+        else
+        {
+            selectedNode.SetActiveOutline(false);
+        }
+    }
+    public NodeChangeHint NodeHintPanel { get { return nodeHintPanel; } }
+
+    public GraphNode SelectedNode { get { return selectedNode; } set { selectedNode = value; } }
 
     [SerializeField]
     int maxJamNumber = 0;
@@ -57,7 +83,7 @@ public class NodesMap : MonoBehaviour
         var butterNodes = new List<GraphNode>();
         for(int i = 0; i < nodes.Length; i++)
         {
-            if(GetNode(i).IsPeanutButter)
+            if(GetNode(i).IsPeanutButter && !GetNode(i).IsShielded)
                 butterNodes.Add(GetNode(i));
         }
 
@@ -96,32 +122,46 @@ public class NodesMap : MonoBehaviour
     {
         if (selectedNode != null)
         {
-            if (Input.GetKeyDown(KeyCode.R))
+            if(selectedNode.IsBread)
             {
-                if (selectedNode.IsBread)
+                if(Input.GetKeyDown(KeyCode.Mouse0))
                 {
                     selectedNode.SetAsJamSandwich();
-                    MaxJamNumberIncrease();
                 }
-            }
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                if (selectedNode.IsBread)
+                else if(Input.GetKeyDown(KeyCode.Mouse1))
                 {
                     selectedNode.SetAsJammed();
-                    MaxJamNumberIncrease();
                 }
-                else if (selectedNode.IsJammed || selectedNode.IsPeanutButter)
+            }
+            else if((selectedNode.IsJammed || selectedNode.IsPeanutButter) && !selectedNode.IsShielded)
+            {
+                if(Input.GetKeyUp(KeyCode.Mouse0))
                 {
                     selectedNode.SetShieldStatus(true);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.W))
+            if(Input.GetKeyDown(KeyCode.Mouse2))
             {
-                if (!selectedNode.IsJamSandwich)
-                    waitSecondNode = true;
+                if(!selectedNode.IsJamSandwich)
+                {
+                    newWay = Instantiate(wayPref, Vector3.zero, Quaternion.identity, transform).GetComponent<LineRenderer>();
+                    newWay.SetPosition(0, selectedNode.transform.position);
+                    newWay.SetPosition(1, (Vector2)Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition));
+                    nodeHintPanel.HideLeftHint();
+                    nodeHintPanel.HideRightHint();
+                }
             }
         }
+
+        if(newWay != null)
+        {
+            newWay.SetPosition(1, (Vector2)Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition));
+            if(!Input.GetKey(KeyCode.Mouse2))
+            {
+                StopDrawingNewWay();
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.D))
         {
             NextTurn();
@@ -137,15 +177,14 @@ public class NodesMap : MonoBehaviour
         if (node == selectedNode)
             throw new ArgumentException();
 
-        int sIndex = GetNodeIndex(selectedNode);
-        int nIndex = GetNodeIndex(node);
+        int sIndex = selectedNode.NodeIndex;
+        int nIndex = node.NodeIndex;
         if (!mainGraph.GetNeighbors(sIndex).Contains(nIndex) && !mainGraph.GetNeighbors(nIndex).Contains(sIndex))
         {
             mainGraph.AddEdge(sIndex, nIndex);
             DrawGraph();
             CurrentJamNumberDecrease();
         }
-        waitSecondNode = false;
     }
 
     public GraphNode GetNode(int i)

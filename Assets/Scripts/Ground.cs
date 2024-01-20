@@ -4,18 +4,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Ground : MonoBehaviour, IPointerDownHandler
+public class Ground : MonoBehaviour
 {
     [SerializeField]
     SpriteRenderer _outline;
     [SerializeField]
     NodesMap _graph;
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        var color = _outline.color;
-        color.a = 0f;
-        _outline.color = color;
-        _graph.SelectedNode = null;
-    }
 }

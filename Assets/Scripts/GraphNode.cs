@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GraphNode : MonoBehaviour, IPointerDownHandler
+public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public enum NodeStates { None, Toaster, PeanutToaster, PeanutButter, JamSandwich, Jammed, Bread }
     [SerializeField]
@@ -43,6 +44,9 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
         _map.FreeNode(_map.GetNodeIndex(_map.SelectedNode));
         state = NodeStates.JamSandwich;
         _sprite.sprite = stateSprites[(int)state];
+        SetActiveOutline(false);
+        _map.NodeHintPanel.HideLeftHint();
+        _map.NodeHintPanel.HideRightHint();
         _map.MaxJamNumberIncrease();
         _map.CurrentJamNumberDecrease();
     }
@@ -51,6 +55,8 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
         state = NodeStates.Jammed;
         _sprite.sprite = stateSprites[(int)state];
         _map.CurrentJamNumberDecrease();
+        _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+        _map.NodeHintPanel.HideRightHint();
     }
 
     public void SetShieldStatus(bool isOn)
@@ -81,21 +87,76 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
             state = NodeStates.PeanutButter;
             _sprite.sprite = stateSprites[(int)state];
         }
+        SetActiveOutline(false);
+        _map.NodeHintPanel.HideLeftHint();
+        _map.NodeHintPanel.HideRightHint();
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void SetActiveOutline(bool isActive)
     {
-        if (_map.WaitSecondNode && !IsJamSandwich)
+        var color = _outline.color;
+        if (isActive)
         {
-            _map.JoinNodeToSelect(this);
-        }
-        else if(IsToaster || IsJammed || _map.MainGraph.GetNeighbors(NodeIndex).Any(e=> _map.GetNode(e).IsJammed || _map.GetNode(e).IsToaster))
-        {
-            var color = _outline.color;
             color.a = 0.6f;
             _outline.color = color;
             _outline.transform.position = transform.position;
             _map.SelectedNode = this;
+        }
+        else
+        {
+            color.a = 0f;
+            _outline.color = color;
+            _map.SelectedNode = null;
+        }
+
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (_map.NewWay == null)
+        {
+            if (IsToaster || IsJammed || _map.MainGraph.GetNeighbors(NodeIndex).Any(e => _map.GetNode(e).IsJammed || _map.GetNode(e).IsToaster))
+            {
+                SetActiveOutline(true);
+                if (!IsShielded)
+                    switch (State)
+                    {
+                        case NodeStates.Toaster:
+                            break;
+                        case NodeStates.Bread:
+                            _map.NodeHintPanel.SetLeftHint(stateSprites[(int)NodeStates.JamSandwich]);
+                            _map.NodeHintPanel.SetRightHint(stateSprites[(int)NodeStates.Jammed]);
+                            break;
+                        case NodeStates.PeanutButter:
+                            _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+                            break;
+                        case NodeStates.Jammed:
+                            _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+                            break;
+                        case NodeStates.JamSandwich:
+                            break;
+                    }
+            }
+        }
+        else
+        {
+            if (!IsJamSandwich)
+            {
+                _map.SecondSelectNode = this;
+            }
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (IsToaster || IsJammed || _map.MainGraph.GetNeighbors(NodeIndex).Any(e => _map.GetNode(e).IsJammed || _map.GetNode(e).IsToaster))
+        {
+            if (_map.NewWay == null)
+            {
+                _map.NodeHintPanel.HideLeftHint();
+                _map.NodeHintPanel.HideRightHint();
+                SetActiveOutline(false);
+            }
         }
     }
 }
