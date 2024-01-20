@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -74,7 +75,7 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
         {
             _map.JoinNodeToSelect(this);
         }
-        else if(_map.MainGraph.BreadthFirstSearch(0, NodeIndex))  // 0 - is toster
+        else if(IsToaster || IsJammed || _map.MainGraph.GetNeighbors(NodeIndex).Any(e=> _map.GetNode(e).IsJammed || _map.GetNode(e).IsToaster))
         {
             var color = _outline.color;
             color.a = 0.6f;

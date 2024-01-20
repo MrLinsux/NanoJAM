@@ -833,7 +833,7 @@ MonoBehaviour:
   firstWaysInspector: 0000000000000000000000000300000003000000
   secondWaysInspector: 0100000002000000030000000100000002000000
   maxJamNumber: 3
-  currentJamNumber: 3
+  currentJamNumber: 21
 --- !u!4 &1421078299
 Transform:
   m_ObjectHideFlags: 0
