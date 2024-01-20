@@ -63,7 +63,7 @@ public class NodesMap : MonoBehaviour
 
         for(int i = 0; i < butterNodes.Count; i++)
         {
-            var neighbors = mainGraph.GetNeighbors(butterNodes[i].NodeIndex).Where(e => !GetNode(e).IsPeanutButter && !GetNode(e).IsShielded).ToList();
+            var neighbors = mainGraph.GetNeighbors(butterNodes[i].NodeIndex).Where(e => !GetNode(e).IsPeanutButter && !GetNode(e).IsShielded && !GetNode(e).IsPeanutToaster).ToList();
             if(neighbors != null && neighbors.Count() > 0)
             {
                 GetNode(neighbors[0]).SetAsButter();
@@ -113,7 +113,7 @@ public class NodesMap : MonoBehaviour
                 }
                 else if (selectedNode.IsJammed || selectedNode.IsPeanutButter)
                 {
-                    selectedNode.SetAsShield();
+                    selectedNode.SetShieldStatus(true);
                 }
             }
             if (Input.GetKeyDown(KeyCode.W))

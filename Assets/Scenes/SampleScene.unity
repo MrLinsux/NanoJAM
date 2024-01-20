@@ -173,8 +173,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1382320650205123609, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: state
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3003580506186782635, guid: 268a2268c16b54046ae504615e3615da, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2413806693520163455, guid: 181450a6169d2e041842db4f071075fc, type: 3}
     - target: {fileID: 7011566519664260644, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_Name
       value: Node (5)
@@ -234,8 +238,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1382320650205123609, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: state
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3003580506186782635, guid: 268a2268c16b54046ae504615e3615da, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2413806693520163455, guid: 181450a6169d2e041842db4f071075fc, type: 3}
     - target: {fileID: 7011566519664260644, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_Name
       value: Node (6)
@@ -257,6 +265,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -354,6 +363,26 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_MaxRayIntersections: 0
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AssetsPPU: 16
+  m_RefResolutionX: 256
+  m_RefResolutionY: 160
+  m_UpscaleRT: 1
+  m_PixelSnapping: 0
+  m_CropFrameX: 0
+  m_CropFrameY: 0
+  m_StretchFill: 0
 --- !u!4 &650454802 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
@@ -479,6 +508,10 @@ PrefabInstance:
       propertyPath: state
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 3003580506186782635, guid: 268a2268c16b54046ae504615e3615da, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2413806693520163455, guid: 181450a6169d2e041842db4f071075fc, type: 3}
     - target: {fileID: 7011566519664260644, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_Name
       value: Node (1)
@@ -545,6 +578,10 @@ PrefabInstance:
       propertyPath: state
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 3003580506186782635, guid: 268a2268c16b54046ae504615e3615da, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2413806693520163455, guid: 181450a6169d2e041842db4f071075fc, type: 3}
     - target: {fileID: 7011566519664260644, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_Name
       value: Node (4)
@@ -636,7 +673,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -10
   m_Sprite: {fileID: 7482667652216324306, guid: c5a7866d5b67c934eb3e21463164408d, type: 3}
-  m_Color: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+  m_Color: {r: 0.8509804, g: 0.7944966, b: 0.70035684, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -784,6 +821,10 @@ PrefabInstance:
       propertyPath: state
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 3003580506186782635, guid: 268a2268c16b54046ae504615e3615da, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2413806693520163455, guid: 181450a6169d2e041842db4f071075fc, type: 3}
     - target: {fileID: 7011566519664260644, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_Name
       value: Node (3)
@@ -1059,6 +1100,10 @@ PrefabInstance:
       propertyPath: state
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 3003580506186782635, guid: 268a2268c16b54046ae504615e3615da, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2413806693520163455, guid: 181450a6169d2e041842db4f071075fc, type: 3}
     - target: {fileID: 7011566519664260644, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_Name
       value: Node (2)
@@ -1218,6 +1263,10 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3003580506186782635, guid: 268a2268c16b54046ae504615e3615da, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2413806693520163455, guid: 181450a6169d2e041842db4f071075fc, type: 3}
     - target: {fileID: 7011566519664260644, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_Name
       value: Node

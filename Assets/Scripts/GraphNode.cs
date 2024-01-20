@@ -4,22 +4,27 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class GraphNode : MonoBehaviour, IPointerDownHandler
 {
-    public enum NodeStates { None, Toaster, PeanutButter, JamSandwich, Jammed, Shielded, Bread }
+    public enum NodeStates { None, Toaster, PeanutToaster, PeanutButter, JamSandwich, Jammed, Bread }
     [SerializeField]
-    Color[] stateColors;
+    Sprite[] stateSprites;
     public int NodeIndex { get { return _map.GetNodeIndex(this); } }
 
     [SerializeField]
     private NodeStates state;
     public NodeStates State {  get { return state; } }
     public bool IsToaster { get { return State == NodeStates.Toaster; } }
+    public bool IsPeanutToaster { get { return State == NodeStates.PeanutToaster; } }
     public bool IsPeanutButter { get { return State == NodeStates.PeanutButter; } }
     public bool IsJamSandwich { get { return State == NodeStates.JamSandwich; } }
     public bool IsJammed { get { return State == NodeStates.Jammed; } }
-    public bool IsShielded { get { return State == NodeStates.Shielded; } }
+    public bool IsShielded { get { return isShielded; } }
+    bool isShielded = false;
+    [SerializeField]
+    GameObject shieldSprite;
     public bool IsBread { get { return State == NodeStates.Bread; } }
     SpriteRenderer _sprite;
     SpriteRenderer _outline;
@@ -29,7 +34,7 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
     {
         _map = transform.parent.GetComponent<NodesMap>();
         _sprite = GetComponent<SpriteRenderer>();
-        _sprite.color = stateColors[(int)state];
+        _sprite.sprite = stateSprites[(int)state];
         _outline = GameObject.Find("Outline").GetComponent<SpriteRenderer>();
     }
 
@@ -37,35 +42,44 @@ public class GraphNode : MonoBehaviour, IPointerDownHandler
     {
         _map.FreeNode(_map.GetNodeIndex(_map.SelectedNode));
         state = NodeStates.JamSandwich;
-        _sprite.color = stateColors[(int)NodeStates.JamSandwich];
+        _sprite.sprite = stateSprites[(int)state];
         _map.MaxJamNumberIncrease();
         _map.CurrentJamNumberDecrease();
     }
     public void SetAsJammed()
     {
         state = NodeStates.Jammed;
-        _sprite.color = stateColors[(int)NodeStates.Jammed];
+        _sprite.sprite = stateSprites[(int)state];
         _map.CurrentJamNumberDecrease();
     }
 
-    public void SetAsShield()
+    public void SetShieldStatus(bool isOn)
     {
-        state = NodeStates.Shielded;
-        _sprite.color = stateColors[(int)NodeStates.Shielded];
-        _map.CurrentJamNumberDecrease();
+        if(isOn)
+        {
+            isShielded = true;
+            _map.CurrentJamNumberDecrease();
+        }
+        else
+        {
+            isShielded = false;
+            _sprite.sprite = stateSprites[(int)state];
+        }
+        shieldSprite.SetActive(isOn);
     }
+
     public void SetAsButter()
     {
         if (IsToaster)
         {
-            state = NodeStates.PeanutButter;
-            _sprite.color = stateColors[(int)NodeStates.PeanutButter];
+            state = NodeStates.PeanutToaster;
+            _sprite.sprite = stateSprites[(int)state];
             _map.Controller.GameOver();
         }
-        else
+        else if(!IsPeanutToaster)
         {
             state = NodeStates.PeanutButter;
-            _sprite.color = stateColors[(int)NodeStates.PeanutButter];
+            _sprite.sprite = stateSprites[(int)state];
         }
     }
 
