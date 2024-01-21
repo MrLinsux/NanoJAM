@@ -14,6 +14,16 @@ public class Graph
         _vertices = vertNum; _edgesList = edges;
     }
 
+    public Graph(int vertNum)
+    {
+        _vertices = vertNum;
+        _edgesList = new List<int>[vertNum];
+        for(int i = 0; i < _vertices; i++)
+        {
+            _edgesList[i] = new List<int>();
+        }
+    }
+
     public List<int> GetNeighbors(int i)
     {
         if (i < 0 || i > _vertices - 1)

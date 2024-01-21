@@ -249,13 +249,19 @@ public class NodesMap : MonoBehaviour
             }
         }
 
+        Graph existsWays = new Graph(mainGraph.Vertices);
+
         for(int i = 0; i < mainGraph.Vertices; i++)
         {
             for (int j = 0; j < mainGraph.GetNeighbors(i).Count; j++)
             {
-                LineRenderer line = Instantiate(wayPref, Vector3.zero, Quaternion.identity, transform).GetComponent<LineRenderer>();
-                line.SetPosition(0, GetNode(i).transform.position);
-                line.SetPosition(1, GetNode(mainGraph.GetNeighbors(i)[j]).transform.position);
+                if (!existsWays.GetNeighbors(mainGraph.GetNeighbors(i)[j]).Contains(i))
+                {
+                    LineRenderer line = Instantiate(wayPref, Vector3.zero, Quaternion.identity, transform).GetComponent<LineRenderer>();
+                    line.SetPosition(0, GetNode(i).transform.position);
+                    line.SetPosition(1, GetNode(mainGraph.GetNeighbors(i)[j]).transform.position);
+                    existsWays.AddEdge(i, mainGraph.GetNeighbors(i)[j]);
+                }
             }
         }
     }

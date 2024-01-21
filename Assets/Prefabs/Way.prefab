@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 829914331923219963}
   - component: {fileID: 7108632280412607680}
+  - component: {fileID: -8276223289253305595}
   m_Layer: 0
   m_Name: Way
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -79,7 +80,7 @@ LineRenderer:
   - {x: 0, y: 1, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.2
+    widthMultiplier: 1
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -128,11 +129,33 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 4
     textureScale: {x: 1, y: 1}
-    shadowBias: 0.5
+    shadowBias: 1
     generateLightingData: 0
   m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &-8276223289253305595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787325307656521108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18fa0695599b72a4dbfc7d9ee438bd5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeBetweenAnimationFrame: 0.125
+  sprites:
+  - {fileID: 2800000, guid: 9ae56cb50013e9f4fabf24af840648a3, type: 3}
+  - {fileID: 2800000, guid: 898eca242aadad541bba4c9f9d291ffe, type: 3}
+  - {fileID: 2800000, guid: ccc7b517dfafde045905bab14d404859, type: 3}
+  - {fileID: 2800000, guid: fb522a41fd231454eadcab4ef070574f, type: 3}
+  - {fileID: 2800000, guid: cc9ef3be27e13d9469bf41c309737dad, type: 3}
+  - {fileID: 2800000, guid: ad8eb16ba66be8149aaa419a4c818047, type: 3}
+  - {fileID: 2800000, guid: f27a9f8fee665a0438e2ab5cc3fed2b9, type: 3}
+  - {fileID: 2800000, guid: df15824fc2536904aa14de51d3ae135a, type: 3}

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 14ecd713a7a2b1248a1242c08ab6fe3e
+guid: e99686a36c36a30438031fbb8116aaea
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -37,9 +37,9 @@ TextureImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -110,148 +110,169 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Nodes_0
+      name: WayVariant_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 48
+        y: 0
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c2f79d81d87f86640817cbde74fddb1e
-      internalID: 1003196446
+      spriteID: b1039daf9c8bd4644b51dbba42183cd6
+      internalID: 570366086
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Nodes_1
+      name: WayVariant_1
       rect:
         serializedVersion: 2
         x: 16
-        y: 48
+        y: 0
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89cb2ec630570a446a5563e641b2e891
-      internalID: -1130820847
+      spriteID: 8b380302a7c071d40867c819a26b7afd
+      internalID: 1557548504
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Nodes_2
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fe589808632701747b6c1e245c54e970
-      internalID: -1026879829
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Nodes_3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 79b57c81127fdf44d9fac310732cfa17
-      internalID: -2073624540
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Nodes_4
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 25ea01308c4d0b84e9e0663e37e30c0b
-      internalID: -1178387225
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Nodes_5
+      name: WayVariant_2
       rect:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 32
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d5f1383f314add84b9a970da33e6ba5b
-      internalID: 351896278
+      spriteID: 5d7baf0509ee8004ea2b8df161102031
+      internalID: -1216915183
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Nodes_6
+      name: WayVariant_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 16
+        x: 48
+        y: 0
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 90758858b368e7f4a99bf7feb0b3bd03
-      internalID: -415177993
+      spriteID: 02ab429ed9b12354e8ad64f85f19b004
+      internalID: -1598353826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WayVariant_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 813fbc6e05b83e44baed8dc3e0d26d48
+      internalID: 606045961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WayVariant_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 097f3826c574f1347b8592ade6937bcd
+      internalID: 474730689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WayVariant_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ded054abc720a842a0cbea7af17b9f5
+      internalID: 1280451821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WayVariant_7
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2da5c31a804932b4591d2fa19efdc907
+      internalID: -1459750518
       vertices: []
       indices: 
       edges: []
@@ -267,22 +288,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Nodes_0: 1003196446
-      Nodes_1: -1130820847
-      Nodes_10: 25990171
-      Nodes_11: -320629590
-      Nodes_12: -1804581781
-      Nodes_13: 77509628
-      Nodes_14: 473008633
-      Nodes_15: 1535318061
-      Nodes_2: -1026879829
-      Nodes_3: -2073624540
-      Nodes_4: -1178387225
-      Nodes_5: 351896278
-      Nodes_6: -415177993
-      Nodes_7: -1295161853
-      Nodes_8: 1395884895
-      Nodes_9: -436743340
+      WayVariant_0: 570366086
+      WayVariant_1: 1557548504
+      WayVariant_2: -1216915183
+      WayVariant_3: -1598353826
+      WayVariant_4: 606045961
+      WayVariant_5: 474730689
+      WayVariant_6: 1280451821
+      WayVariant_7: -1459750518
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
