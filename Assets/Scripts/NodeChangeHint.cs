@@ -21,6 +21,13 @@ public class NodeChangeHint : MonoBehaviour
         rightHints[0].SetActive(false);
         rightHints[1].SetActive(false);
     }
+
+    public void HideAllHints()
+    {
+        HideLeftHint();
+        HideRightHint();
+    }
+
     public void SetLeftHint(Sprite leftNode)
     {
         leftHints[0].SetActive(true);

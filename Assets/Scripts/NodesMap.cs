@@ -14,8 +14,8 @@ public class NodesMap : MonoBehaviour
     Graph mainGraph;
     public Graph MainGraph { get { return mainGraph; } }
     [SerializeField]
-    Controller controller;
-    public Controller Controller { get { return controller; } }
+    Controller _controller;
+    public Controller Controller { get { return _controller; } }
 
     [SerializeField]
     GraphNode[] nodes;
@@ -39,6 +39,19 @@ public class NodesMap : MonoBehaviour
     [SerializeField]
     NodeChangeHint nodeHintPanel;
     LineRenderer newWay;
+    [SerializeField]
+    int maxStepsToLose = 3;
+    [SerializeField]
+    int stepsToLose = 3;
+    public void StepsToLoseDecrease()
+    {
+        stepsToLose--;
+        if(stepsToLose <= 0)
+        {
+            _controller.GameOver();
+        }
+    }
+
     public LineRenderer NewWay { get { return newWay; } }
     public void StopDrawingNewWay()
     {
@@ -58,6 +71,8 @@ public class NodesMap : MonoBehaviour
     public NodeChangeHint NodeHintPanel { get { return nodeHintPanel; } }
 
     public GraphNode SelectedNode { get { return selectedNode; } set { selectedNode = value; } }
+
+    bool canMakeJamSandwitch = true;
 
     [SerializeField]
     int maxJamNumber = 0;
@@ -80,6 +95,7 @@ public class NodesMap : MonoBehaviour
 
     public void ButterTurn()
     {
+        bool canChangeAnyNode = false;
         var butterNodes = new List<GraphNode>();
         for(int i = 0; i < nodes.Length; i++)
         {
@@ -89,11 +105,16 @@ public class NodesMap : MonoBehaviour
 
         for(int i = 0; i < butterNodes.Count; i++)
         {
-            var neighbors = mainGraph.GetNeighbors(butterNodes[i].NodeIndex).Where(e => !GetNode(e).IsPeanutButter && !GetNode(e).IsShielded && !GetNode(e).IsPeanutToaster).ToList();
-            if(neighbors != null && neighbors.Count() > 0)
+            var suitableNeighbors = mainGraph.GetNeighbors(butterNodes[i].NodeIndex).Where(e => !GetNode(e).IsPeanutButter && !GetNode(e).IsShielded && !GetNode(e).IsPeanutToaster).ToList();
+            if(suitableNeighbors != null && suitableNeighbors.Count() > 0)
             {
-                GetNode(neighbors[0]).SetAsButter();
+                GetNode(suitableNeighbors[0]).SetAsButter();
+                canChangeAnyNode = true;
             }
+        }
+        if(!canChangeAnyNode)
+        {
+            StepsToLoseDecrease();
         }
     }
 
@@ -116,6 +137,7 @@ public class NodesMap : MonoBehaviour
         }
         mainGraph = new Graph(nodes.Length, _wayList);
         DrawGraph();
+        stepsToLose = maxStepsToLose;
     }
 
     private void Update()
@@ -124,9 +146,10 @@ public class NodesMap : MonoBehaviour
         {
             if(selectedNode.IsBread)
             {
-                if(Input.GetKeyDown(KeyCode.Mouse0))
+                if(Input.GetKeyDown(KeyCode.Mouse0) && canMakeJamSandwitch)
                 {
                     selectedNode.SetAsJamSandwich();
+                    canMakeJamSandwitch = false;
                 }
                 else if(Input.GetKeyDown(KeyCode.Mouse1))
                 {
@@ -147,8 +170,7 @@ public class NodesMap : MonoBehaviour
                     newWay = Instantiate(wayPref, Vector3.zero, Quaternion.identity, transform).GetComponent<LineRenderer>();
                     newWay.SetPosition(0, selectedNode.transform.position);
                     newWay.SetPosition(1, (Vector2)Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition));
-                    nodeHintPanel.HideLeftHint();
-                    nodeHintPanel.HideRightHint();
+                    nodeHintPanel.HideAllHints();
                 }
             }
         }

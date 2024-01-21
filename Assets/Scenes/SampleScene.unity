@@ -290,7 +290,7 @@ Camera:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -831,7 +831,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1122574267
 Transform:
   m_ObjectHideFlags: 0
@@ -1070,12 +1070,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 350bc981050767d4e9e7748588eb0d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1824330376}
+  _controller: {fileID: 1824330376}
   nodes: []
   wayPref: {fileID: 1787325307656521108, guid: f467e68290f57f044b6c45baeecd4922, type: 3}
   firstWaysInspector: 0000000000000000000000000300000003000000
   secondWaysInspector: 0100000002000000030000000100000002000000
   nodeHintPanel: {fileID: 961082672}
+  maxStepsToLose: 3
+  stepsToLose: 3
   maxJamNumber: 3
   currentJamNumber: 3
 --- !u!4 &1421078299

@@ -45,8 +45,7 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         state = NodeStates.JamSandwich;
         _sprite.sprite = stateSprites[(int)state];
         SetActiveOutline(false);
-        _map.NodeHintPanel.HideLeftHint();
-        _map.NodeHintPanel.HideRightHint();
+        _map.NodeHintPanel.HideAllHints();
         _map.MaxJamNumberIncrease();
         _map.CurrentJamNumberDecrease();
     }
@@ -88,8 +87,7 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             _sprite.sprite = stateSprites[(int)state];
         }
         SetActiveOutline(false);
-        _map.NodeHintPanel.HideLeftHint();
-        _map.NodeHintPanel.HideRightHint();
+        _map.NodeHintPanel.HideAllHints();
     }
 
     public void SetActiveOutline(bool isActive)
@@ -153,9 +151,12 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             if (_map.NewWay == null)
             {
-                _map.NodeHintPanel.HideLeftHint();
-                _map.NodeHintPanel.HideRightHint();
+                _map.NodeHintPanel.HideAllHints();
                 SetActiveOutline(false);
+            }
+            else
+            {
+                _map.SecondSelectNode = null;
             }
         }
     }
