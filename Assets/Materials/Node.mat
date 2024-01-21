@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Node
-  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 2ace4915c6e6dba4993a13b2c5bed441, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -95,6 +95,7 @@ Material:
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _NewOutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _OldOutlineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpriteColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []

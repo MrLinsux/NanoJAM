@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using System.Drawing;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public enum NodeStates { None, Toaster, PeanutToaster, PeanutButter, JamSandwich, Jammed, Bread }
     [SerializeField]
     Sprite[] stateSprites;
+    [SerializeField]
+    UnityEngine.Color outlineColor;
     public int NodeIndex { get { return _map.GetNodeIndex(this); } }
 
     [SerializeField]
@@ -28,7 +31,6 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     GameObject shieldSprite;
     public bool IsBread { get { return State == NodeStates.Bread; } }
     SpriteRenderer _sprite;
-    SpriteRenderer _outline;
     NodesMap _map;
 
     public void Init()
@@ -36,7 +38,6 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         _map = transform.parent.GetComponent<NodesMap>();
         _sprite = GetComponent<SpriteRenderer>();
         _sprite.sprite = stateSprites[(int)state];
-        _outline = GameObject.Find("Outline").GetComponent<SpriteRenderer>();
     }
 
     public void SetAsJamSandwich()
@@ -90,22 +91,19 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         _map.NodeHintPanel.HideAllHints();
     }
 
+    void UpdateOutline(bool outline)
+    {
+        MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+        _sprite.GetPropertyBlock(mpb);
+        mpb.SetFloat("_Outline", outline ? 1f : 0);
+        mpb.SetColor("_OutlineColor", outlineColor);
+        _sprite.SetPropertyBlock(mpb);
+    }
+
     public void SetActiveOutline(bool isActive)
     {
-        var color = _outline.color;
-        if (isActive)
-        {
-            color.a = 0.6f;
-            _outline.color = color;
-            _outline.transform.position = transform.position;
-            _map.SelectedNode = this;
-        }
-        else
-        {
-            color.a = 0f;
-            _outline.color = color;
-            _map.SelectedNode = null;
-        }
+        UpdateOutline(isActive);
+        _map.SelectedNode = isActive ? this : null;
 
     }
 

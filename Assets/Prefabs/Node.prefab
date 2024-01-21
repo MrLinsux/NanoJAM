@@ -56,6 +56,7 @@ MonoBehaviour:
   - {fileID: -415177993, guid: 14ecd713a7a2b1248a1242c08ab6fe3e, type: 3}
   - {fileID: -1130820847, guid: 14ecd713a7a2b1248a1242c08ab6fe3e, type: 3}
   - {fileID: 1003196446, guid: 14ecd713a7a2b1248a1242c08ab6fe3e, type: 3}
+  outlineColor: {r: 0.45093888, g: 0.7830189, b: 0.2622375, a: 1}
   state: 1
   shieldSprite: {fileID: 8600870917031781419}
 --- !u!212 &3003580506186782635
@@ -98,7 +99,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   m_Sprite: {fileID: -2413806693520163455, guid: 181450a6169d2e041842db4f071075fc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

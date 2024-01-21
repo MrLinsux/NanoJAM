@@ -113,8 +113,8 @@ TextureImporter:
       name: Nodes_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 48
+        x: 1
+        y: 50
         width: 16
         height: 16
       alignment: 0
@@ -134,8 +134,8 @@ TextureImporter:
       name: Nodes_1
       rect:
         serializedVersion: 2
-        x: 16
-        y: 48
+        x: 18
+        y: 50
         width: 16
         height: 16
       alignment: 0
@@ -155,8 +155,8 @@ TextureImporter:
       name: Nodes_2
       rect:
         serializedVersion: 2
-        x: 32
-        y: 32
+        x: 35
+        y: 34
         width: 32
         height: 32
       alignment: 0
@@ -176,8 +176,8 @@ TextureImporter:
       name: Nodes_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
+        x: 1
+        y: 33
         width: 16
         height: 16
       alignment: 0
@@ -197,8 +197,8 @@ TextureImporter:
       name: Nodes_4
       rect:
         serializedVersion: 2
-        x: 16
-        y: 32
+        x: 18
+        y: 33
         width: 16
         height: 16
       alignment: 0
@@ -218,8 +218,8 @@ TextureImporter:
       name: Nodes_5
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
+        x: 35
+        y: 1
         width: 32
         height: 32
       alignment: 0
@@ -239,7 +239,7 @@ TextureImporter:
       name: Nodes_6
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 16
         width: 16
         height: 16
