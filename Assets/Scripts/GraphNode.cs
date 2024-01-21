@@ -147,17 +147,17 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (IsToaster || IsJammed || _map.MainGraph.GetNeighbors(NodeIndex).Any(e => _map.GetNode(e).IsJammed || _map.GetNode(e).IsToaster))
+        if (_map.NewWay == null)
         {
-            if (_map.NewWay == null)
+            if (IsToaster || IsJammed || _map.MainGraph.GetNeighbors(NodeIndex).Any(e => _map.GetNode(e).IsJammed || _map.GetNode(e).IsToaster))
             {
                 _map.NodeHintPanel.HideAllHints();
                 SetActiveOutline(false);
             }
-            else
-            {
-                _map.SecondSelectNode = null;
-            }
+        }
+        else
+        {
+            _map.SecondSelectNode = null;
         }
     }
 }
