@@ -55,7 +55,16 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         state = NodeStates.Jammed;
         _sprite.sprite = stateSprites[(int)state];
         _map.CurrentJamNumberDecrease();
-        _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+        if (_map.CanMakeShield)
+        {
+            _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+        }
+        else
+        {
+            _map.NodeHintPanel.HideLeftHint();
+        }
+        if (_map.CanMakeConnections)
+            _map.NodeHintPanel.SetUpHint();
         _map.NodeHintPanel.HideRightHint();
     }
 
@@ -65,6 +74,8 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             isShielded = true;
             _map.CurrentJamNumberDecrease();
+            if(IsPeanutButter)
+                _map.PeanutButterShieldSetsIncrease();
         }
         else
         {
@@ -104,7 +115,6 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         UpdateOutline(isActive);
         _map.SelectedNode = isActive ? this : null;
-
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -118,16 +128,45 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     switch (State)
                     {
                         case NodeStates.Toaster:
+                            if (_map.CanMakeConnections)
+                                _map.NodeHintPanel.SetUpHint();
                             break;
                         case NodeStates.Bread:
-                            _map.NodeHintPanel.SetLeftHint(stateSprites[(int)NodeStates.JamSandwich]);
+                            if (_map.CanMakeJamSandwitch)
+                            {
+                                _map.NodeHintPanel.SetLeftHint(stateSprites[(int)NodeStates.JamSandwich]);
+                            }
+                            else
+                            {
+                                _map.NodeHintPanel.HideLeftHint();
+                            }
+                            if(_map.CanMakeConnections)
+                                _map.NodeHintPanel.SetUpHint();
                             _map.NodeHintPanel.SetRightHint(stateSprites[(int)NodeStates.Jammed]);
                             break;
                         case NodeStates.PeanutButter:
-                            _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+                            if (_map.CanMakeShield)
+                            {
+                                _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+                            }
+                            else
+                            {
+                                _map.NodeHintPanel.HideLeftHint();
+                            }
+                            if (_map.CanMakeConnections)
+                                _map.NodeHintPanel.SetUpHint();
                             break;
                         case NodeStates.Jammed:
-                            _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+                            if (_map.CanMakeShield)
+                            {
+                                _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+                            }
+                            else
+                            {
+                                _map.NodeHintPanel.HideLeftHint();
+                            }
+                            if (_map.CanMakeConnections)
+                                _map.NodeHintPanel.SetUpHint();
                             break;
                         case NodeStates.JamSandwich:
                             break;

@@ -9,11 +9,19 @@ public class NodeChangeHint : MonoBehaviour
     private GameObject[] leftHints;
     [SerializeField]
     private GameObject[] rightHints;
-    
+    [SerializeField]
+    private GameObject[] upHints;
+
     public void HideLeftHint()
     {
         leftHints[0].SetActive(false);
         leftHints[1].SetActive(false);
+    }
+
+    public void HideUpHint()
+    {
+        upHints[0].SetActive(false);
+        upHints[1].SetActive(false);
     }
 
     public void HideRightHint()
@@ -25,6 +33,7 @@ public class NodeChangeHint : MonoBehaviour
     public void HideAllHints()
     {
         HideLeftHint();
+        HideUpHint();
         HideRightHint();
     }
 
@@ -33,6 +42,12 @@ public class NodeChangeHint : MonoBehaviour
         leftHints[0].SetActive(true);
         leftHints[0].GetComponent<Image>().sprite = leftNode;
         leftHints[1].SetActive(true);
+    }
+
+    public void SetUpHint()
+    {
+        upHints[0].SetActive(true);
+        upHints[1].SetActive(true);
     }
 
     public void SetRightHint(Sprite rightNode)

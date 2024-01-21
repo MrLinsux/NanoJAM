@@ -11,6 +11,26 @@ using static GraphNode;
 
 public class NodesMap : MonoBehaviour
 {
+    [SerializeField, Tooltip("level 2")]
+    bool canMakeShield = true;
+    public bool CanMakeShield { get { return canMakeShield; } }
+    [SerializeField, Tooltip("level 3")]
+    bool canMakeJamSandwitch = true;
+    public bool CanMakeJamSandwitch { get { return canMakeJamSandwitch; } }
+    [SerializeField, Tooltip("level 4")]
+    bool canMakeConnections = true;
+    public bool CanMakeConnections { get { return canMakeConnections; } }
+    [SerializeField, Tooltip("level 5")]
+    bool butterCanChangeNodes = true;
+    public bool ButterCanChangeNodes { get { return butterCanChangeNodes; } }
+    int JammedNumder { get { return nodes.Count(e => e.IsJammed); } }
+    int livingSteps = 0;
+    public void LivingStepsIncrease() => livingSteps++;
+    int peanutButterSkipSteps = 0;
+    public void PeanutButterSkipStepsIncrease() => peanutButterSkipSteps++;
+    int peanutButterShieldSets = 0;
+    public void PeanutButterShieldSetsIncrease() => peanutButterShieldSets++;
+
     Graph mainGraph;
     public Graph MainGraph { get { return mainGraph; } }
     [SerializeField]
@@ -59,7 +79,8 @@ public class NodesMap : MonoBehaviour
         if (secondSelectedNode != null && secondSelectedNode != selectedNode)
         {
             JoinNodeToSelect(secondSelectedNode);
-            selectedNode.SetActiveOutline(false);
+            if(secondSelectedNode != null)
+                selectedNode.SetActiveOutline(false);
             secondSelectedNode.OnPointerEnter(null);
             secondSelectedNode = null;
         }
@@ -71,8 +92,6 @@ public class NodesMap : MonoBehaviour
     public NodeChangeHint NodeHintPanel { get { return nodeHintPanel; } }
 
     public GraphNode SelectedNode { get { return selectedNode; } set { selectedNode = value; } }
-
-    bool canMakeJamSandwitch = true;
 
     [SerializeField]
     int maxJamNumber = 0;
@@ -88,14 +107,18 @@ public class NodesMap : MonoBehaviour
 
     public void NextTurn()
     {
-        ButterTurn();
+        if(butterCanChangeNodes)
+            ButterTurn();
         CurrentJamNumber = MaxJamNumber;
+        if (!_controller.IsGameOver)
+            LivingStepsIncrease();
         Debug.Log("Next Turn");
     }
 
     public void ButterTurn()
     {
         bool canChangeAnyNode = false;
+        bool haveWayToToaster = false;
         var butterNodes = new List<GraphNode>();
         for(int i = 0; i < nodes.Length; i++)
         {
@@ -109,12 +132,17 @@ public class NodesMap : MonoBehaviour
             if(suitableNeighbors != null && suitableNeighbors.Count() > 0)
             {
                 GetNode(suitableNeighbors[0]).SetAsButter();
+                haveWayToToaster |= mainGraph.BreadthFirstSearch(butterNodes[i].NodeIndex, 0);
                 canChangeAnyNode = true;
             }
         }
         if(!canChangeAnyNode)
         {
             StepsToLoseDecrease();
+            if(haveWayToToaster)
+            {
+                PeanutButterSkipStepsIncrease();
+            }
         }
     }
 
@@ -158,14 +186,14 @@ public class NodesMap : MonoBehaviour
             }
             else if((selectedNode.IsJammed || selectedNode.IsPeanutButter) && !selectedNode.IsShielded)
             {
-                if(Input.GetKeyUp(KeyCode.Mouse0))
+                if(Input.GetKeyUp(KeyCode.Mouse0) && canMakeShield)
                 {
                     selectedNode.SetShieldStatus(true);
                 }
             }
             if(Input.GetKeyDown(KeyCode.Mouse2))
             {
-                if(!selectedNode.IsJamSandwich)
+                if(!selectedNode.IsJamSandwich && canMakeConnections)
                 {
                     newWay = Instantiate(wayPref, Vector3.zero, Quaternion.identity, transform).GetComponent<LineRenderer>();
                     newWay.SetPosition(0, selectedNode.transform.position);
@@ -187,6 +215,24 @@ public class NodesMap : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             NextTurn();
+        }
+
+        // TODO: delete on release
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Debug.Log("Number of jammed nodes: " + JammedNumder);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Debug.Log("Number of living steps: " + livingSteps);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Debug.Log("Butter skip " + peanutButterSkipSteps + " steps");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Debug.Log("Has been " + peanutButterShieldSets + " shields on butter");
         }
     }
 

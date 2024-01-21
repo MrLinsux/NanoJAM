@@ -6,6 +6,9 @@ public class Controller : MonoBehaviour
 {
     [SerializeField]
     NodesMap map;
+    [SerializeField]
+    bool isGameOver = false;
+    public bool IsGameOver { get { return isGameOver; } }
 
     private void Awake()
     {
@@ -15,5 +18,6 @@ public class Controller : MonoBehaviour
     public void GameOver()
     {
         Debug.Log("You lose!");
+        isGameOver = true;
     }
 }
