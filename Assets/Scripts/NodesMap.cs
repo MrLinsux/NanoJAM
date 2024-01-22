@@ -136,7 +136,9 @@ public class NodesMap : MonoBehaviour
             ButterTurn();
         else
             PeanutButterSkipStepsIncrease();
+
         CurrentJamNumber = MaxJamNumber;
+        canMakeJamSandwitch = true;
         if (!_controller.IsGameOver)
             LivingStepsIncrease();
         SetActiveTotalShield(false);
@@ -202,7 +204,7 @@ public class NodesMap : MonoBehaviour
         {
             if(selectedNode.IsBread)
             {
-                if(Input.GetKeyDown(KeyCode.Mouse0) && canMakeJamSandwitch)
+                if(Input.GetKeyDown(KeyCode.Mouse0) && CanMakeJamSandwitch)
                 {
                     selectedNode.SetAsJamSandwich();
                     canMakeJamSandwitch = false;
