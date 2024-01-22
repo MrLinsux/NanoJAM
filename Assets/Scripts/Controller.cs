@@ -20,4 +20,9 @@ public class Controller : MonoBehaviour
         Debug.Log("You lose!");
         isGameOver = true;
     }
+
+    public void PlaySound()
+    {
+        GetComponent<AudioSource>().Play();
+    }
 }

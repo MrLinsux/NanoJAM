@@ -23,6 +23,25 @@ public class NodesMap : MonoBehaviour
     [SerializeField, Tooltip("level 5")]
     bool butterCanChangeNodes = true;
     public bool ButterCanChangeNodes { get { return butterCanChangeNodes; } }
+
+    bool canMakeTotalShield = true;
+    public bool CanMakeTotalShield { get { return canMakeTotalShield; } }
+
+    void SetActiveTotalShield(bool isActive)
+    {
+        if (isActive)
+        {
+            MaxJamNumberDecrease();
+            CurrentJamNumberDecrease();
+            StartCoroutine(wave.ZaWarudo());
+            _controller.PlaySound();
+        }
+        canMakeTotalShield = !isActive;
+        butterCanChangeNodes = !isActive;
+    }
+    [SerializeField]
+    Wave wave;
+
     int JammedNumder { get { return nodes.Count(e => e.IsJammed); } }
     int livingSteps = 0;
     public void LivingStepsIncrease() => livingSteps++;
@@ -37,6 +56,8 @@ public class NodesMap : MonoBehaviour
     Controller _controller;
     public Controller Controller { get { return _controller; } }
 
+    [SerializeField]
+    AudioClip zaWarudoSound;
     [SerializeField]
     GraphNode[] nodes;
     public GraphNode[] Nodes
@@ -79,7 +100,7 @@ public class NodesMap : MonoBehaviour
         if (secondSelectedNode != null && secondSelectedNode != selectedNode)
         {
             JoinNodeToSelect(secondSelectedNode);
-            if(secondSelectedNode != null)
+            if(selectedNode != null)
                 selectedNode.SetActiveOutline(false);
             secondSelectedNode.OnPointerEnter(null);
             secondSelectedNode = null;
@@ -101,24 +122,31 @@ public class NodesMap : MonoBehaviour
 
     [SerializeField]
     int currentJamNumber = 0;
-    public int CurrentJamNumber { get { return currentJamNumber; } private set { currentJamNumber = value; if (currentJamNumber <= 0) NextTurn(); } }
+    public int CurrentJamNumber { get { return currentJamNumber; } private set { currentJamNumber = value; } }
     public void CurrentJamNumberIncrease() => CurrentJamNumber++;
-    public void CurrentJamNumberDecrease() => CurrentJamNumber--;
+    public void CurrentJamNumberDecrease()
+    {
+        CurrentJamNumber--;
+        if (currentJamNumber <= 0) NextTurn();
+    }
 
     public void NextTurn()
     {
         if(butterCanChangeNodes)
             ButterTurn();
+        else
+            PeanutButterSkipStepsIncrease();
         CurrentJamNumber = MaxJamNumber;
         if (!_controller.IsGameOver)
             LivingStepsIncrease();
+        SetActiveTotalShield(false);
         Debug.Log("Next Turn");
     }
 
     public void ButterTurn()
     {
         bool canChangeAnyNode = false;
-        bool haveWayToToaster = false;
+        //bool haveWayToToaster = false;
         var butterNodes = new List<GraphNode>();
         for(int i = 0; i < nodes.Length; i++)
         {
@@ -132,17 +160,17 @@ public class NodesMap : MonoBehaviour
             if(suitableNeighbors != null && suitableNeighbors.Count() > 0)
             {
                 GetNode(suitableNeighbors[0]).SetAsButter();
-                haveWayToToaster |= mainGraph.BreadthFirstSearch(butterNodes[i].NodeIndex, 0);
+                //haveWayToToaster |= mainGraph.BreadthFirstSearch(butterNodes[i].NodeIndex, 0);
                 canChangeAnyNode = true;
             }
         }
         if(!canChangeAnyNode)
         {
             StepsToLoseDecrease();
-            if(haveWayToToaster)
-            {
-                PeanutButterSkipStepsIncrease();
-            }
+            //if(haveWayToToaster)
+            //{
+            //    PeanutButterSkipStepsIncrease();
+            //}
         }
     }
 
@@ -215,6 +243,10 @@ public class NodesMap : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             NextTurn();
+        }
+        if(Input.GetKeyDown(KeyCode.R) && CanMakeTotalShield)
+        {
+            SetActiveTotalShield(true);
         }
 
         // TODO: delete on release
