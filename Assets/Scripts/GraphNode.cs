@@ -132,7 +132,7 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                                 _map.NodeHintPanel.SetUpHint();
                             break;
                         case NodeStates.Bread:
-                            if (_map.CanMakeJamSandwitch)
+                            if (_map.CanMakeJamSandwitch && !_map.MaxJamNumberIsChanged)
                             {
                                 _map.NodeHintPanel.SetLeftHint(stateSprites[(int)NodeStates.JamSandwich]);
                             }

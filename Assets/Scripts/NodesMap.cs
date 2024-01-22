@@ -73,8 +73,8 @@ public class NodesMap : MonoBehaviour
     GraphNode selectedNode;
     GraphNode secondSelectedNode;
     public GraphNode SecondSelectNode
-    { 
-        get { return secondSelectedNode; } 
+    {
+        get { return secondSelectedNode; }
         set { secondSelectedNode = value; }
     }
     [SerializeField]
@@ -87,7 +87,7 @@ public class NodesMap : MonoBehaviour
     public void StepsToLoseDecrease()
     {
         stepsToLose--;
-        if(stepsToLose <= 0)
+        if (stepsToLose <= 0)
         {
             _controller.GameOver();
         }
@@ -100,7 +100,7 @@ public class NodesMap : MonoBehaviour
         if (secondSelectedNode != null && secondSelectedNode != selectedNode)
         {
             JoinNodeToSelect(secondSelectedNode);
-            if(selectedNode != null)
+            if (selectedNode != null)
                 selectedNode.SetActiveOutline(false);
             secondSelectedNode.OnPointerEnter(null);
             secondSelectedNode = null;
@@ -117,8 +117,18 @@ public class NodesMap : MonoBehaviour
     [SerializeField]
     int maxJamNumber = 0;
     public int MaxJamNumber { get { return maxJamNumber; } }
-    public void MaxJamNumberIncrease() => maxJamNumber++;
-    public void MaxJamNumberDecrease() => maxJamNumber--;
+    public void MaxJamNumberIncrease()
+    {
+        maxJamNumber++;
+        maxJamNumberIsChanged = true;
+    }
+    public void MaxJamNumberDecrease()
+    {
+        maxJamNumber--;
+        maxJamNumberIsChanged = true;
+    }
+    bool maxJamNumberIsChanged = false;
+    public bool MaxJamNumberIsChanged { get {  return maxJamNumberIsChanged; } }
 
     [SerializeField]
     int currentJamNumber = 0;
@@ -138,6 +148,7 @@ public class NodesMap : MonoBehaviour
             PeanutButterSkipStepsIncrease();
 
         CurrentJamNumber = MaxJamNumber;
+        maxJamNumberIsChanged = false;
         canMakeJamSandwitch = true;
         if (!_controller.IsGameOver)
             LivingStepsIncrease();
@@ -204,7 +215,7 @@ public class NodesMap : MonoBehaviour
         {
             if(selectedNode.IsBread)
             {
-                if(Input.GetKeyDown(KeyCode.Mouse0) && CanMakeJamSandwitch)
+                if(Input.GetKeyDown(KeyCode.Mouse0) && CanMakeJamSandwitch && !MaxJamNumberIsChanged)
                 {
                     selectedNode.SetAsJamSandwich();
                     canMakeJamSandwitch = false;
@@ -246,7 +257,7 @@ public class NodesMap : MonoBehaviour
         {
             NextTurn();
         }
-        if(Input.GetKeyDown(KeyCode.R) && CanMakeTotalShield)
+        if(Input.GetKeyDown(KeyCode.R) && CanMakeTotalShield && !MaxJamNumberIsChanged)
         {
             SetActiveTotalShield(true);
         }
