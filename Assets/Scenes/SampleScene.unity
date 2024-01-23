@@ -1154,9 +1154,10 @@ MonoBehaviour:
   canMakeJamSandwitch: 1
   canMakeConnections: 1
   butterCanChangeNodes: 1
+  canMakeTotalShield: 1
+  butterCanShielded: 1
   wave: {fileID: 2144843376}
   _controller: {fileID: 1824330376}
-  zaWarudoSound: {fileID: 0}
   nodes: []
   wayPref: {fileID: 1787325307656521108, guid: f467e68290f57f044b6c45baeecd4922, type: 3}
   firstWaysInspector: 0000000000000000000000000300000003000000
@@ -1588,6 +1589,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
   m_PrefabInstance: {fileID: 8099649823189637811}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1942956619 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8600870917031781419, guid: 268a2268c16b54046ae504615e3615da, type: 3}
+  m_PrefabInstance: {fileID: 8099649823189637811}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1945621418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1992,6 +1998,10 @@ PrefabInstance:
       propertyPath: state
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1382320650205123609, guid: 268a2268c16b54046ae504615e3615da, type: 3}
+      propertyPath: shield
+      value: 
+      objectReference: {fileID: 1942956619}
     - target: {fileID: 3003580506186782635, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_FlipX
       value: 0

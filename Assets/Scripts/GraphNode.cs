@@ -28,7 +28,8 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public bool IsShielded { get { return isShielded; } }
     bool isShielded = false;
     [SerializeField]
-    GameObject shieldSprite;
+    GameObject shield;
+    Sprite ShieldSprite { get { return shield.GetComponent<SpriteRenderer>().sprite; } }
     public bool IsBread { get { return State == NodeStates.Bread; } }
     SpriteRenderer _sprite;
     NodesMap _map;
@@ -57,7 +58,7 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         _map.CurrentJamNumberDecrease();
         if (_map.CanMakeShield)
         {
-            _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+            _map.NodeHintPanel.SetLeftHint(ShieldSprite);
         }
         else
         {
@@ -82,7 +83,7 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             isShielded = false;
             _sprite.sprite = stateSprites[(int)state];
         }
-        shieldSprite.SetActive(isOn);
+        shield.SetActive(isOn);
     }
 
     public void SetAsButter()
@@ -130,9 +131,11 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                         case NodeStates.Toaster:
                             if (_map.CanMakeConnections)
                                 _map.NodeHintPanel.SetUpHint();
+                            if(_map.CanMakeTotalShield)
+                                _map.NodeHintPanel.SetLeftHint(ShieldSprite);
                             break;
                         case NodeStates.Bread:
-                            if (_map.CanMakeJamSandwitch && !_map.MaxJamNumberIsChanged)
+                            if (_map.CanMakeJamSandwitch)
                             {
                                 _map.NodeHintPanel.SetLeftHint(stateSprites[(int)NodeStates.JamSandwich]);
                             }
@@ -145,9 +148,9 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                             _map.NodeHintPanel.SetRightHint(stateSprites[(int)NodeStates.Jammed]);
                             break;
                         case NodeStates.PeanutButter:
-                            if (_map.CanMakeShield)
+                            if (_map.CanMakeShield && _map.ButterCanShielded)
                             {
-                                _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+                                _map.NodeHintPanel.SetLeftHint(ShieldSprite);
                             }
                             else
                             {
@@ -159,7 +162,7 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                         case NodeStates.Jammed:
                             if (_map.CanMakeShield)
                             {
-                                _map.NodeHintPanel.SetLeftHint(shieldSprite.GetComponent<SpriteRenderer>().sprite);
+                                _map.NodeHintPanel.SetLeftHint(ShieldSprite);
                             }
                             else
                             {

@@ -58,7 +58,7 @@ MonoBehaviour:
   - {fileID: 1003196446, guid: 14ecd713a7a2b1248a1242c08ab6fe3e, type: 3}
   outlineColor: {r: 0.45093888, g: 0.7830189, b: 0.2622375, a: 1}
   state: 1
-  shieldSprite: {fileID: 8600870917031781419}
+  shield: {fileID: 8600870917031781419}
 --- !u!212 &3003580506186782635
 SpriteRenderer:
   m_ObjectHideFlags: 0

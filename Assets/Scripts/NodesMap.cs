@@ -16,7 +16,7 @@ public class NodesMap : MonoBehaviour
     public bool CanMakeShield { get { return canMakeShield; } }
     [SerializeField, Tooltip("level 3")]
     bool canMakeJamSandwitch = true;
-    public bool CanMakeJamSandwitch { get { return canMakeJamSandwitch; } }
+    public bool CanMakeJamSandwitch { get { return canMakeJamSandwitch && !MaxJamNumberIsChanged; } }
     [SerializeField, Tooltip("level 4")]
     bool canMakeConnections = true;
     public bool CanMakeConnections { get { return canMakeConnections; } }
@@ -24,8 +24,13 @@ public class NodesMap : MonoBehaviour
     bool butterCanChangeNodes = true;
     public bool ButterCanChangeNodes { get { return butterCanChangeNodes; } }
 
+    [SerializeField]
     bool canMakeTotalShield = true;
-    public bool CanMakeTotalShield { get { return canMakeTotalShield; } }
+    public bool CanMakeTotalShield { get { return canMakeTotalShield && !MaxJamNumberIsChanged && MaxJamNumber > 1; } }
+
+    [SerializeField]
+    bool butterCanShielded = true;
+    public bool ButterCanShielded { get { return butterCanShielded; } }
 
     void SetActiveTotalShield(bool isActive)
     {
@@ -42,7 +47,7 @@ public class NodesMap : MonoBehaviour
     [SerializeField]
     Wave wave;
 
-    int JammedNumder { get { return nodes.Count(e => e.IsJammed); } }
+    int ButterNumder { get { return nodes.Count(e => e.IsPeanutButter); } }
     int livingSteps = 0;
     public void LivingStepsIncrease() => livingSteps++;
     int peanutButterSkipSteps = 0;
@@ -56,8 +61,6 @@ public class NodesMap : MonoBehaviour
     Controller _controller;
     public Controller Controller { get { return _controller; } }
 
-    [SerializeField]
-    AudioClip zaWarudoSound;
     [SerializeField]
     GraphNode[] nodes;
     public GraphNode[] Nodes
@@ -102,7 +105,8 @@ public class NodesMap : MonoBehaviour
             JoinNodeToSelect(secondSelectedNode);
             if (selectedNode != null)
                 selectedNode.SetActiveOutline(false);
-            secondSelectedNode.OnPointerEnter(null);
+            if(secondSelectedNode != null)
+                secondSelectedNode.OnPointerEnter(null);
             secondSelectedNode = null;
         }
         else
@@ -215,7 +219,7 @@ public class NodesMap : MonoBehaviour
         {
             if(selectedNode.IsBread)
             {
-                if(Input.GetKeyDown(KeyCode.Mouse0) && CanMakeJamSandwitch && !MaxJamNumberIsChanged)
+                if(Input.GetKeyDown(KeyCode.Mouse0) && CanMakeJamSandwitch)
                 {
                     selectedNode.SetAsJamSandwich();
                     canMakeJamSandwitch = false;
@@ -225,11 +229,26 @@ public class NodesMap : MonoBehaviour
                     selectedNode.SetAsJammed();
                 }
             }
-            else if((selectedNode.IsJammed || selectedNode.IsPeanutButter) && !selectedNode.IsShielded)
+            else if(selectedNode.IsJammed && !selectedNode.IsShielded)
             {
                 if(Input.GetKeyUp(KeyCode.Mouse0) && canMakeShield)
                 {
                     selectedNode.SetShieldStatus(true);
+                }
+            }
+            else if(selectedNode.IsPeanutButter && ButterCanShielded)
+            {
+                if (Input.GetKeyUp(KeyCode.Mouse0) && canMakeShield)
+                {
+                    selectedNode.SetShieldStatus(true);
+                }
+            }
+            else if(selectedNode.IsToaster)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0) && CanMakeTotalShield)
+                {
+                    SetActiveTotalShield(true);
+                    nodeHintPanel.HideLeftHint();
                 }
             }
             if(Input.GetKeyDown(KeyCode.Mouse2))
@@ -257,15 +276,11 @@ public class NodesMap : MonoBehaviour
         {
             NextTurn();
         }
-        if(Input.GetKeyDown(KeyCode.R) && CanMakeTotalShield && !MaxJamNumberIsChanged)
-        {
-            SetActiveTotalShield(true);
-        }
 
         // TODO: delete on release
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Debug.Log("Number of jammed nodes: " + JammedNumder);
+            Debug.Log("Number of jammed nodes: " + ButterNumder);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
