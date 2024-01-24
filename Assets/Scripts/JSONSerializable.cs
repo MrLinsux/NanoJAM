@@ -6,6 +6,7 @@ using UnityEngine;
 public static class JSONSerializable
 {
     public static readonly string levelsJSONFileName = "ProgressData";
+    public static readonly string saveFilePath = Application.persistentDataPath+"/SaveFile.dat";
 
     [Serializable]
     public class Levels

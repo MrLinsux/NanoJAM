@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -32,35 +33,43 @@ public class Controller : MonoBehaviour
 
     public void LevelIsComplete()
     {
-        var levels = JsonUtility.FromJson<JSONSerializable.Levels>(Resources.Load<TextAsset>(JSONSerializable.levelsJSONFileName).text).levels;
+        var levels = LoadGame().levels;
         if (levels.First(l => l.name == LevelName)!=null)
             levels.First(l => l.name == LevelName).isComplete = true;
         else
             throw new MissingComponentException("There is no level.");
 
-        var saveData = JsonUtility.ToJson(new JSONSerializable.Levels(levels));
-
-        string path = null;
-#if UNITY_STANDALONE
-        // You cannot add a subfolder, at least it does not work for me
-        path = $"NanoJAM_Data/Resources/{JSONSerializable.levelsJSONFileName}.json";
-    #endif
-#if UNITY_EDITOR
-        path = $"Assets/Resources/{JSONSerializable.levelsJSONFileName}.json";
-#endif
-
-        using (FileStream fs = new FileStream(path, FileMode.Create))
-        {
-            using (StreamWriter writer = new StreamWriter(fs))
-            {
-                writer.Write(saveData);
-            }
-        }
-#if UNITY_EDITOR
-        UnityEditor.AssetDatabase.Refresh();
-#endif
+        SaveGame(new JSONSerializable.Levels(levels));
 
         levelCompletePanel.SetActive(true);
+    }
+
+    void SaveGame(JSONSerializable.Levels data)
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(JSONSerializable.saveFilePath);
+        bf.Serialize(file, data);
+        file.Close();
+        Debug.Log("Game data saved!");
+    }
+
+    JSONSerializable.Levels LoadGame()
+    {
+        if (File.Exists(JSONSerializable.saveFilePath))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file =
+              File.Open(JSONSerializable.saveFilePath, FileMode.Open);
+            JSONSerializable.Levels data = (JSONSerializable.Levels)bf.Deserialize(file);
+            file.Close();
+            Debug.Log("Game data loaded!");
+            return data;
+        }
+        else
+        {
+            Debug.LogError("There is no save data!");
+            return null;
+        }
     }
 
     public void PlaySound()
