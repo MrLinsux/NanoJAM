@@ -12,6 +12,9 @@ public static class JSONSerializable
     {
         public Level[] levels;
 
+        public Levels(Level[] levels)
+        { this.levels = levels; }
+
         [Serializable]
         public class Level
         {

@@ -1,16 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Build;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static GraphNode;
 
 public class NodesMap : MonoBehaviour
 {
+    [Header("Level Settings")]
     [SerializeField, Tooltip("level 2")]
     bool canMakeShield = true;
     public bool CanMakeShield { get { return canMakeShield; } }
@@ -32,19 +28,17 @@ public class NodesMap : MonoBehaviour
     bool butterCanShielded = true;
     public bool ButterCanShielded { get { return butterCanShielded; } }
 
-    void SetActiveTotalShield(bool isActive)
-    {
-        butterCanChangeNodes = !isActive;
-        if (isActive)
-        {
-            StartCoroutine(wave.ZaWarudo());
-            _controller.PlaySound();
-            MaxJamNumberDecrease();
-            CurrentJamNumberDecrease();
-        }
-    }
-    [SerializeField]
-    Wave wave;
+
+
+    [Header("Level Tasks")]
+    [SerializeField, Tooltip("task 1")]
+    int NeedButter = -1;
+    [SerializeField, Tooltip("task 2")]
+    int NeedBeAlive = -1;
+    [SerializeField, Tooltip("task 3")]
+    int NeedButterSkipSteps = -1;
+    [SerializeField, Tooltip("task 4")]
+    int NeedButterShieded = -1;
 
     int ButterNumder { get { return nodes.Count(e => e.IsPeanutButter); } }
     int livingSteps = 0;
@@ -54,34 +48,22 @@ public class NodesMap : MonoBehaviour
     int peanutButterShieldSets = 0;
     public void PeanutButterShieldSetsIncrease() => peanutButterShieldSets++;
 
-    Graph mainGraph;
-    public Graph MainGraph { get { return mainGraph; } }
-    [SerializeField]
-    Controller _controller;
-    public Controller Controller { get { return _controller; } }
+    public bool EnoughButter { get { return NeedButter<=ButterNumder || NeedButter ==-1; } }
+    public bool EnoughIsAlive { get { return NeedBeAlive <= livingSteps || NeedBeAlive == -1; } }
+    public bool EnoughButterSkipSteps { get { return NeedButterSkipSteps <= peanutButterSkipSteps || NeedButterSkipSteps == -1; } }
+    public bool EnoughButterShielded { get { return NeedButterShieded <= peanutButterShieldSets || NeedButterShieded == -1; } }
 
-    [SerializeField]
-    GraphNode[] nodes;
-    public GraphNode[] Nodes
+    public bool IsWin
     {
-        get { return nodes; }
+        get
+        {
+            return EnoughButter && EnoughIsAlive && EnoughButterSkipSteps && EnoughButterShielded;
+        }
     }
-    [SerializeField]
-    GameObject wayPref;
-    [SerializeField]
-    List<int> firstWaysInspector;
-    [SerializeField]
-    List<int> secondWaysInspector;
-    GraphNode selectedNode;
-    GraphNode secondSelectedNode;
-    public GraphNode SecondSelectNode
-    {
-        get { return secondSelectedNode; }
-        set { secondSelectedNode = value; }
-    }
-    [SerializeField]
-    NodeChangeHint nodeHintPanel;
-    LineRenderer newWay;
+
+
+
+    [Header("In game variables")]
     [SerializeField]
     int maxStepsToLose = 3;
     [SerializeField]
@@ -94,6 +76,68 @@ public class NodesMap : MonoBehaviour
             _controller.GameOver();
         }
     }
+
+    public void ResetLoseProgression() => stepsToLose = maxStepsToLose;
+
+    [SerializeField]
+    int maxJamNumber = 0;
+    public int MaxJamNumber { get { return maxJamNumber; } }
+    public void MaxJamNumberIncrease()
+    {
+        maxJamNumber++;
+        maxJamNumberIsChanged = true;
+    }
+    public void MaxJamNumberDecrease()
+    {
+        maxJamNumber--;
+        maxJamNumberIsChanged = true;
+    }
+    bool maxJamNumberIsChanged = false;
+    public bool MaxJamNumberIsChanged { get { return maxJamNumberIsChanged; } }
+
+    [SerializeField]
+    int currentJamNumber = 0;
+    public int CurrentJamNumber { get { return currentJamNumber; } private set { currentJamNumber = value; } }
+    public void CurrentJamNumberIncrease() => CurrentJamNumber++;
+    public void CurrentJamNumberDecrease()
+    {
+        CurrentJamNumber--;
+        if (currentJamNumber <= 0) NextTurn();
+    }
+
+
+
+    [Header("Outer Objects")]
+    [SerializeField]
+    Wave wave;
+
+    Graph mainGraph;
+    public Graph MainGraph { get { return mainGraph; } }
+    [SerializeField]
+    Controller _controller;
+    public Controller Controller { get { return _controller; } }
+
+    GraphNode[] nodes;
+    public GraphNode[] Nodes
+    {
+        get { return nodes; }
+    }
+    [SerializeField]
+    GameObject wayPref;
+    [SerializeField]
+    NodeChangeHint nodeHintPanel;
+    [SerializeField]
+    List<int> firstWaysInspector;
+    [SerializeField]
+    List<int> secondWaysInspector;
+    GraphNode selectedNode;
+    GraphNode secondSelectedNode;
+    public GraphNode SecondSelectNode
+    {
+        get { return secondSelectedNode; }
+        set { secondSelectedNode = value; }
+    }
+    LineRenderer newWay;
 
     public LineRenderer NewWay { get { return newWay; } }
     public void StopDrawingNewWay()
@@ -117,34 +161,14 @@ public class NodesMap : MonoBehaviour
 
     public GraphNode SelectedNode { get { return selectedNode; } set { selectedNode = value; } }
 
-    [SerializeField]
-    int maxJamNumber = 0;
-    public int MaxJamNumber { get { return maxJamNumber; } }
-    public void MaxJamNumberIncrease()
-    {
-        maxJamNumber++;
-        maxJamNumberIsChanged = true;
-    }
-    public void MaxJamNumberDecrease()
-    {
-        maxJamNumber--;
-        maxJamNumberIsChanged = true;
-    }
-    bool maxJamNumberIsChanged = false;
-    public bool MaxJamNumberIsChanged { get {  return maxJamNumberIsChanged; } }
-
-    [SerializeField]
-    int currentJamNumber = 0;
-    public int CurrentJamNumber { get { return currentJamNumber; } private set { currentJamNumber = value; } }
-    public void CurrentJamNumberIncrease() => CurrentJamNumber++;
-    public void CurrentJamNumberDecrease()
-    {
-        CurrentJamNumber--;
-        if (currentJamNumber <= 0) NextTurn();
-    }
-
     public void NextTurn()
     {
+        if(IsWin)
+        {
+            _controller.LevelIsComplete();
+            return;
+        }
+
         if(butterCanChangeNodes)
             ButterTurn();
         else
@@ -157,6 +181,18 @@ public class NodesMap : MonoBehaviour
             LivingStepsIncrease();
         SetActiveTotalShield(false);
         Debug.Log("Next Turn");
+    }
+
+    void SetActiveTotalShield(bool isActive)
+    {
+        butterCanChangeNodes = !isActive;
+        if (isActive)
+        {
+            StartCoroutine(wave.ZaWarudo());
+            _controller.PlaySound();
+            MaxJamNumberDecrease();
+            CurrentJamNumberDecrease();
+        }
     }
 
     public void ButterTurn()
@@ -276,9 +312,10 @@ public class NodesMap : MonoBehaviour
             NextTurn();
         }
 
-        // TODO: delete on release
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            Destroy(this.gameObject);
             Debug.Log("Number of jammed nodes: " + ButterNumder);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -293,6 +330,7 @@ public class NodesMap : MonoBehaviour
         {
             Debug.Log("Has been " + peanutButterShieldSets + " shields on butter");
         }
+#endif
     }
 
     public void JoinNodeToSelect(GraphNode node)
