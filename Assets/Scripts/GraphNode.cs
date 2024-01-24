@@ -49,13 +49,13 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         SetActiveOutline(false);
         _map.NodeHintPanel.HideAllHints();
         _map.MaxJamNumberIncrease();
-        _map.CurrentJamNumberDecrease();
+        _map.CurrentJamPointDecrease();
     }
     public void SetAsJammed()
     {
         state = NodeStates.Jammed;
         _sprite.sprite = stateSprites[(int)state];
-        _map.CurrentJamNumberDecrease();
+        _map.CurrentJamPointDecrease();
         if (_map.CanMakeShield)
         {
             _map.NodeHintPanel.SetLeftHint(ShieldSprite);
@@ -71,19 +71,18 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void SetShieldStatus(bool isOn)
     {
+        isShielded = isOn;
+        shield.SetActive(isOn);
         if(isOn)
         {
-            isShielded = true;
-            _map.CurrentJamNumberDecrease();
+            _map.CurrentJamPointDecrease();
             if(IsPeanutButter)
                 _map.PeanutButterShieldSetsIncrease();
         }
         else
         {
-            isShielded = false;
             _sprite.sprite = stateSprites[(int)state];
         }
-        shield.SetActive(isOn);
     }
 
     public void SetAsButter()
@@ -122,7 +121,7 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         if (_map.NewWay == null)
         {
-            if (IsToaster || IsJammed || _map.MainGraph.GetNeighbors(NodeIndex).Any(e => _map.GetNode(e).IsJammed || _map.GetNode(e).IsToaster))
+            if (IsToaster || IsJammed || _map.MainGraph.GetNeighbors(NodeIndex).Any(e => _map.GetNode(e).IsJammed || _map.GetNode(e).IsToaster || _map.GetNode(e).IsShielded))
             {
                 SetActiveOutline(true);
                 if (!IsShielded)
@@ -189,7 +188,7 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         if (_map.NewWay == null)
         {
-            if (IsToaster || IsJammed || _map.MainGraph.GetNeighbors(NodeIndex).Any(e => _map.GetNode(e).IsJammed || _map.GetNode(e).IsToaster))
+            if (IsToaster || IsJammed || _map.MainGraph.GetNeighbors(NodeIndex).Any(e => _map.GetNode(e).IsJammed || _map.GetNode(e).IsToaster || _map.GetNode(e).IsShielded))
             {
                 _map.NodeHintPanel.HideAllHints();
                 SetActiveOutline(false);

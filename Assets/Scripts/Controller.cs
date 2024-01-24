@@ -22,6 +22,8 @@ public class Controller : MonoBehaviour
     private void Awake()
     {
         map.Init();
+        gameOverPanel = GameObject.Find("GameOverPanel");
+        levelCompletePanel = GameObject.Find("LevelCompletePanel");
     }
 
     public void GameOver()

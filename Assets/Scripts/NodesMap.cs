@@ -22,7 +22,7 @@ public class NodesMap : MonoBehaviour
 
     [SerializeField]
     bool canMakeTotalShield = true;
-    public bool CanMakeTotalShield { get { return canMakeTotalShield && !MaxJamNumberIsChanged && MaxJamNumber > 1; } }
+    public bool CanMakeTotalShield { get { return canMakeTotalShield && !MaxJamNumberIsChanged && MaxJamPoints > 1; } }
 
     [SerializeField]
     bool butterCanShielded = true;
@@ -32,32 +32,39 @@ public class NodesMap : MonoBehaviour
 
     [Header("Level Tasks")]
     [SerializeField, Tooltip("task 1")]
-    int NeedButter = -1;
+    int NeedJammed = -1;
     [SerializeField, Tooltip("task 2")]
-    int NeedBeAlive = -1;
+    int NeedJamShieled = -1;
     [SerializeField, Tooltip("task 3")]
     int NeedButterSkipSteps = -1;
     [SerializeField, Tooltip("task 4")]
-    int NeedButterShieded = -1;
+    bool AllButterIsShielded = false;
+    [SerializeField, Tooltip("task 5")]
+    int NeedMaxJamPoint = -1;
 
-    int ButterNumder { get { return nodes.Count(e => e.IsPeanutButter); } }
+    int JammedNumber { get { return nodes.Count(e => e.IsJammed); } }
     int livingSteps = 0;
     public void LivingStepsIncrease() => livingSteps++;
     int peanutButterSkipSteps = 0;
-    public void PeanutButterSkipStepsIncrease() => peanutButterSkipSteps++;
+    public void PeanutButterSkipStepsIncrease()
+    {
+        peanutButterSkipSteps++;
+        _taskPanel.SetButterSkipStepTaskProgress(peanutButterSkipSteps, NeedButterSkipSteps);
+    }
     int peanutButterShieldSets = 0;
     public void PeanutButterShieldSetsIncrease() => peanutButterShieldSets++;
 
-    public bool EnoughButter { get { return NeedButter<=ButterNumder || NeedButter ==-1; } }
-    public bool EnoughIsAlive { get { return NeedBeAlive <= livingSteps || NeedBeAlive == -1; } }
+    public bool EnoughJammed { get { return NeedJammed <= JammedNumber || NeedJammed == -1; } }
+    public bool EnoughJamShielded { get { return NeedJamShieled <= nodes.Count(n => n.IsJammed && n.IsShielded) || NeedJamShieled == -1; } }
     public bool EnoughButterSkipSteps { get { return NeedButterSkipSteps <= peanutButterSkipSteps || NeedButterSkipSteps == -1; } }
-    public bool EnoughButterShielded { get { return NeedButterShieded <= peanutButterShieldSets || NeedButterShieded == -1; } }
+    public bool EnoughButterShielded { get { return !AllButterIsShielded || nodes.Count(n => n.IsPeanutButter) == nodes.Count(n => n.IsPeanutButter && n.IsShielded); } }
+    public bool EnoughMaxJamPoint { get { return MaxJamPoints >= NeedMaxJamPoint || NeedMaxJamPoint == -1; } }
 
     public bool IsWin
     {
         get
         {
-            return EnoughButter && EnoughIsAlive && EnoughButterSkipSteps && EnoughButterShielded;
+            return EnoughJammed && EnoughJamShielded && EnoughButterSkipSteps && EnoughButterShielded && EnoughMaxJamPoint;
         }
     }
 
@@ -81,16 +88,18 @@ public class NodesMap : MonoBehaviour
 
     [SerializeField]
     int maxJamNumber = 0;
-    public int MaxJamNumber { get { return maxJamNumber; } }
+    public int MaxJamPoints { get { return maxJamNumber; } }
     public void MaxJamNumberIncrease()
     {
         maxJamNumber++;
         maxJamNumberIsChanged = true;
+        _taskPanel.SetMaxJamPointTaskProgress(MaxJamPoints, NeedMaxJamPoint);
     }
     public void MaxJamNumberDecrease()
     {
         maxJamNumber--;
         maxJamNumberIsChanged = true;
+        _taskPanel.SetMaxJamPointTaskProgress(MaxJamPoints, NeedMaxJamPoint);
     }
     bool maxJamNumberIsChanged = false;
     public bool MaxJamNumberIsChanged { get { return maxJamNumberIsChanged; } }
@@ -99,7 +108,7 @@ public class NodesMap : MonoBehaviour
     int currentJamNumber = 0;
     public int CurrentJamNumber { get { return currentJamNumber; } private set { currentJamNumber = value; } }
     public void CurrentJamNumberIncrease() => CurrentJamNumber++;
-    public void CurrentJamNumberDecrease()
+    public void CurrentJamPointDecrease()
     {
         CurrentJamNumber--;
         if (currentJamNumber <= 0) NextTurn();
@@ -115,6 +124,8 @@ public class NodesMap : MonoBehaviour
     public Graph MainGraph { get { return mainGraph; } }
     [SerializeField]
     Controller _controller;
+    [SerializeField]
+    TaskPanel _taskPanel;
     public Controller Controller { get { return _controller; } }
 
     GraphNode[] nodes;
@@ -125,7 +136,7 @@ public class NodesMap : MonoBehaviour
     [SerializeField]
     GameObject wayPref;
     [SerializeField]
-    NodeChangeHint nodeHintPanel;
+    NodeChangeHint _nodeHintPanel;
     [SerializeField]
     List<int> firstWaysInspector;
     [SerializeField]
@@ -157,7 +168,7 @@ public class NodesMap : MonoBehaviour
             selectedNode.SetActiveOutline(false);
         }
     }
-    public NodeChangeHint NodeHintPanel { get { return nodeHintPanel; } }
+    public NodeChangeHint NodeHintPanel { get { return _nodeHintPanel; } }
 
     public GraphNode SelectedNode { get { return selectedNode; } set { selectedNode = value; } }
 
@@ -174,7 +185,7 @@ public class NodesMap : MonoBehaviour
         else
             PeanutButterSkipStepsIncrease();
 
-        CurrentJamNumber = MaxJamNumber;
+        CurrentJamNumber = MaxJamPoints;
         maxJamNumberIsChanged = false;
         canMakeJamSandwitch = true;
         if (!_controller.IsGameOver)
@@ -191,7 +202,7 @@ public class NodesMap : MonoBehaviour
             StartCoroutine(wave.ZaWarudo());
             _controller.PlaySound();
             MaxJamNumberDecrease();
-            CurrentJamNumberDecrease();
+            CurrentJamPointDecrease();
         }
     }
 
@@ -212,17 +223,12 @@ public class NodesMap : MonoBehaviour
             if(suitableNeighbors != null && suitableNeighbors.Count() > 0)
             {
                 GetNode(suitableNeighbors[0]).SetAsButter();
-                //haveWayToToaster |= mainGraph.BreadthFirstSearch(butterNodes[i].NodeIndex, 0);
                 canChangeAnyNode = true;
             }
         }
         if(!canChangeAnyNode)
         {
             StepsToLoseDecrease();
-            //if(haveWayToToaster)
-            //{
-            //    PeanutButterSkipStepsIncrease();
-            //}
         }
     }
 
@@ -246,6 +252,9 @@ public class NodesMap : MonoBehaviour
         mainGraph = new Graph(nodes.Length, _wayList);
         DrawGraph();
         stepsToLose = maxStepsToLose;
+        _taskPanel = GameObject.Find("TaskPanel").GetComponent<TaskPanel>();
+        _taskPanel.Init(NeedJammed, NeedJamShieled, NeedButterSkipSteps, AllButterIsShielded, NeedMaxJamPoint);
+        _nodeHintPanel = GameObject.Find("MouseHintPanel").GetComponent<NodeChangeHint>();
     }
 
     private void Update()
@@ -262,6 +271,7 @@ public class NodesMap : MonoBehaviour
                 else if(Input.GetKeyDown(KeyCode.Mouse1))
                 {
                     selectedNode.SetAsJammed();
+                    _taskPanel.SetJammedTaskProgress(JammedNumber, NeedJammed);
                 }
             }
             else if(selectedNode.IsJammed && !selectedNode.IsShielded)
@@ -269,6 +279,7 @@ public class NodesMap : MonoBehaviour
                 if(Input.GetKeyUp(KeyCode.Mouse0) && canMakeShield)
                 {
                     selectedNode.SetShieldStatus(true);
+                    _taskPanel.SetJamShieldedTaskProgress(nodes.Count(n => n.IsJammed && n.IsShielded), NeedJamShieled);
                 }
             }
             else if(selectedNode.IsPeanutButter && ButterCanShielded)
@@ -276,6 +287,7 @@ public class NodesMap : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.Mouse0) && canMakeShield)
                 {
                     selectedNode.SetShieldStatus(true);
+                    _taskPanel.SetAllButterIsShieldedTaskProgress(EnoughButterShielded);
                 }
             }
             else if(selectedNode.IsToaster)
@@ -283,7 +295,7 @@ public class NodesMap : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Mouse0) && CanMakeTotalShield)
                 {
                     SetActiveTotalShield(true);
-                    nodeHintPanel.HideLeftHint();
+                    _nodeHintPanel.HideLeftHint();
                 }
             }
             if(Input.GetKeyDown(KeyCode.Mouse2))
@@ -293,7 +305,7 @@ public class NodesMap : MonoBehaviour
                     newWay = Instantiate(wayPref, Vector3.zero, Quaternion.identity, transform).GetComponent<LineRenderer>();
                     newWay.SetPosition(0, selectedNode.transform.position);
                     newWay.SetPosition(1, (Vector2)Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition));
-                    nodeHintPanel.HideAllHints();
+                    _nodeHintPanel.HideAllHints();
                 }
             }
         }
@@ -315,8 +327,7 @@ public class NodesMap : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Destroy(this.gameObject);
-            Debug.Log("Number of jammed nodes: " + ButterNumder);
+            Debug.Log("Number of jammed nodes: " + JammedNumber);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -348,7 +359,7 @@ public class NodesMap : MonoBehaviour
         {
             mainGraph.AddEdge(sIndex, nIndex);
             DrawGraph();
-            CurrentJamNumberDecrease();
+            CurrentJamPointDecrease();
         }
     }
 
