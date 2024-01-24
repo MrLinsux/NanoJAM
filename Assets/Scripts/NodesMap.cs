@@ -34,15 +34,14 @@ public class NodesMap : MonoBehaviour
 
     void SetActiveTotalShield(bool isActive)
     {
+        butterCanChangeNodes = !isActive;
         if (isActive)
         {
-            MaxJamNumberDecrease();
-            CurrentJamNumberDecrease();
             StartCoroutine(wave.ZaWarudo());
             _controller.PlaySound();
+            MaxJamNumberDecrease();
+            CurrentJamNumberDecrease();
         }
-        canMakeTotalShield = !isActive;
-        butterCanChangeNodes = !isActive;
     }
     [SerializeField]
     Wave wave;
@@ -221,8 +220,8 @@ public class NodesMap : MonoBehaviour
             {
                 if(Input.GetKeyDown(KeyCode.Mouse0) && CanMakeJamSandwitch)
                 {
-                    selectedNode.SetAsJamSandwich();
                     canMakeJamSandwitch = false;
+                    selectedNode.SetAsJamSandwich();
                 }
                 else if(Input.GetKeyDown(KeyCode.Mouse1))
                 {
