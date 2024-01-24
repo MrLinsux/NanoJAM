@@ -9,8 +9,6 @@ public class LevelButton : MonoBehaviour
 {
     [SerializeField]
     string levelName;
-    [SerializeField]
-    bool IsComplete = false;
     public Button ButtonComponent { get { return GetComponent<Button>(); } }
 
     public void Init(bool levelIsLoadable)
