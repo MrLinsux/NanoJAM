@@ -712,8 +712,9 @@ MonoBehaviour:
   currentJamNumber: 3
   wave: {fileID: 2144843376}
   _controller: {fileID: 1824330376}
+  _taskPanel: {fileID: 0}
   wayPref: {fileID: 1787325307656521108, guid: f467e68290f57f044b6c45baeecd4922, type: 3}
-  nodeHintPanel: {fileID: 0}
+  _nodeHintPanel: {fileID: 0}
   firstWaysInspector: 0000000000000000000000000300000003000000
   secondWaysInspector: 0100000002000000030000000100000002000000
 --- !u!4 &1421078299
@@ -1097,6 +1098,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
+--- !u!1 &1798967802 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1239361461556713935, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
+  m_PrefabInstance: {fileID: 1798967801}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1798967803 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7187892606459720638, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
+  m_PrefabInstance: {fileID: 1798967801}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1824330375
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,8 +1140,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 1421078298}
   isGameOver: 0
-  gameOverPanel: {fileID: 0}
-  levelCompletePanel: {fileID: 0}
+  gameOverPanel: {fileID: 1798967803}
+  levelCompletePanel: {fileID: 1798967802}
 --- !u!4 &1824330377
 Transform:
   m_ObjectHideFlags: 0
