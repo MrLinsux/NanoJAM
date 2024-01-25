@@ -7,17 +7,11 @@ public class SoundController : MonoBehaviour
 {
     [SerializeField]
     AudioClip clickSound;
-    AudioClip breadClickSound;
     AudioSource _audio;
 
     public void PlayClickSound()
     {
         _audio.PlayOneShot(clickSound);
-    }
-
-    public void PlayBreadClickSound()
-    {
-        _audio.PlayOneShot(breadClickSound);
     }
 
     void ChangeSoundVolume(float val) => _audio.volume = val;
