@@ -817,11 +817,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.14
+      value: -0.18
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3
+      value: -3.17
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1658,7 +1658,7 @@ MonoBehaviour:
   butterCanShielded: 0
   NeedJammed: -1
   NeedJamShieled: 5
-  NeedButterSkipSteps: 3
+  NeedButterSkipSteps: 4
   AllButterIsShielded: 0
   NeedMaxJamPoint: -1
   maxStepsToLose: 2
