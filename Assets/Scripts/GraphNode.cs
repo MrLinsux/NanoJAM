@@ -15,6 +15,8 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     Sprite[] stateSprites;
     [SerializeField]
     UnityEngine.Color outlineColor;
+    AudioSource _audio;
+
     public int NodeIndex { get { return _map.GetNodeIndex(this); } }
 
     [SerializeField]
@@ -34,11 +36,16 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     SpriteRenderer _sprite;
     NodesMap _map;
 
+    void ChangeSoundVolume(float val) => _audio.volume = val;
+
     public void Init()
     {
         _map = transform.parent.GetComponent<NodesMap>();
         _sprite = GetComponent<SpriteRenderer>();
         _sprite.sprite = stateSprites[(int)state];
+        _audio = GetComponent<AudioSource>();
+        SettingPanel.AddListenerToSoundVoulumeChanged(ChangeSoundVolume);
+        _audio.volume = SettingPanel.GetSoundPrefs();
     }
 
     public void SetAsJamSandwich()
@@ -50,6 +57,7 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         _map.NodeHintPanel.HideAllHints();
         _map.MaxJamNumberIncrease();
         _map.CurrentJamPointDecrease();
+        _audio.Play();
     }
     public void SetAsJammed()
     {
@@ -67,6 +75,7 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         if (_map.CanMakeConnections)
             _map.NodeHintPanel.SetUpHint();
         _map.NodeHintPanel.HideRightHint();
+        _audio.Play();
     }
 
     public void SetShieldStatus(bool isOn)
@@ -83,6 +92,7 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             _sprite.sprite = stateSprites[(int)state];
         }
+        _audio.Play();
     }
 
     public void SetAsButter()
@@ -124,7 +134,6 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             if (IsToaster || IsJammed || _map.MainGraph.GetNeighbors(NodeIndex).Any(e => _map.GetNode(e).IsJammed || _map.GetNode(e).IsToaster || _map.GetNode(e).IsShielded))
             {
                 SetActiveOutline(true);
-                if (!IsShielded)
                     switch (State)
                     {
                         case NodeStates.Toaster:
@@ -198,5 +207,10 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             _map.SecondSelectNode = null;
         }
+    }
+
+    private void OnDestroy()
+    {
+        SettingPanel.RemoveListenerFromSoundVoulumeChanged(ChangeSoundVolume);
     }
 }

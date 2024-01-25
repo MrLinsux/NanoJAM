@@ -34,7 +34,7 @@ public class Controller : MonoBehaviour
     public void LevelIsComplete()
     {
         var levels = LoadGame().levels;
-        if (levels.First(l => l.name == LevelName)!=null)
+        if (levels.First(l => l.name == LevelName) != null)
             levels.First(l => l.name == LevelName).isComplete = true;
         else
             throw new MissingComponentException("There is no level.");
