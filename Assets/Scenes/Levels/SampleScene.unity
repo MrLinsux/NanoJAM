@@ -143,11 +143,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.74
+      value: 2.14
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.78
+      value: 1.71
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.z
@@ -336,11 +336,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.12
+      value: 3.46
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.41
+      value: 3.51
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1290,17 +1290,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 350bc981050767d4e9e7748588eb0d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canMakeShield: 1
+  canMakeShield: 0
   canMakeJamSandwitch: 1
-  canMakeConnections: 1
+  canMakeConnections: 0
   butterCanChangeNodes: 1
-  canMakeTotalShield: 1
-  butterCanShielded: 1
-  NeedJammed: -1
+  canMakeTotalShield: 0
+  butterCanShielded: 0
+  NeedJammed: 5
   NeedJamShieled: -1
   NeedButterSkipSteps: -1
   AllButterIsShielded: 0
-  NeedMaxJamPoint: -1
+  NeedMaxJamPoint: 5
   maxStepsToLose: 3
   stepsToLose: 3
   maxJamNumber: 1
@@ -1428,7 +1428,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6d5612b19adb8c547bae25e9d3b7cc7e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 5757a52eea98ce04687c7e34fef96677, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.1
   m_Pitch: 1

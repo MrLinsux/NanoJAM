@@ -422,11 +422,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.25
+      value: 5.96
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.52
+      value: 0.38
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1270,11 +1270,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.77
+      value: 5.07
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.58
+      value: 5.54
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1580,11 +1580,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.99
+      value: 3.07
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.52
+      value: 3.65
       objectReference: {fileID: 0}
     - target: {fileID: 491693604906322257, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1733,17 +1733,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canMakeShield: 1
   canMakeJamSandwitch: 1
-  canMakeConnections: 1
+  canMakeConnections: 0
   butterCanChangeNodes: 1
-  canMakeTotalShield: 1
-  butterCanShielded: 1
+  canMakeTotalShield: 0
+  butterCanShielded: 0
   NeedJammed: -1
-  NeedJamShieled: -1
-  NeedButterSkipSteps: 10
-  AllButterIsShielded: 1
-  NeedMaxJamPoint: -1
-  maxStepsToLose: 3
-  stepsToLose: 3
+  NeedJamShieled: 6
+  NeedButterSkipSteps: -1
+  AllButterIsShielded: 0
+  NeedMaxJamPoint: 5
+  maxStepsToLose: 2
+  stepsToLose: 2
   maxJamNumber: 1
   currentJamNumber: 1
   wave: {fileID: 2144843376}
@@ -2271,7 +2271,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6d5612b19adb8c547bae25e9d3b7cc7e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 5757a52eea98ce04687c7e34fef96677, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.1
   m_Pitch: 1
@@ -2417,7 +2417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1382320650205123609, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: state
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7011566519664260644, guid: 268a2268c16b54046ae504615e3615da, type: 3}
       propertyPath: m_Name
