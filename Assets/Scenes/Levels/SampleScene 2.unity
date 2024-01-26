@@ -1774,6 +1774,7 @@ MonoBehaviour:
   maxJamNumber: 3
   currentJamNumber: 3
   wave: {fileID: 2144843376}
+  skipTurnSound: {fileID: 8300000, guid: bb0fe6fc34dd1f64583a08c20a73b409, type: 3}
   _controller: {fileID: 1824330376}
   _taskPanel: {fileID: 0}
   wayPref: {fileID: 1787325307656521108, guid: f467e68290f57f044b6c45baeecd4922, type: 3}

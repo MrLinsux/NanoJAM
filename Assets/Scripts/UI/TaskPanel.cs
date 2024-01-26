@@ -60,7 +60,7 @@ public class TaskPanel : MonoBehaviour
     }
     public void SetAllButterIsShieldedTaskProgress(bool isAll)
     {
-        AllButterIsShieldedTask.text = AllButterIsShieldedTaskText + (isAll ? "Ok" : "neOk");
+        AllButterIsShieldedTask.text = AllButterIsShieldedTaskText;
     }
     public void SetMaxJamPointTaskProgress(int current, int need)
     {

@@ -124,6 +124,8 @@ public class NodesMap : MonoBehaviour
     Wave wave;
 
     Graph mainGraph;
+    [SerializeField]
+    AudioClip skipTurnSound;
     public Graph MainGraph { get { return mainGraph; } }
     [SerializeField]
     Controller _controller;
@@ -325,6 +327,7 @@ public class NodesMap : MonoBehaviour
                 else if(Input.GetKeyDown(KeyCode.Mouse1) && !isNextTurn)
                 {
                     NextTurn();
+                    _controller.GetComponent<AudioSource>().PlayOneShot(skipTurnSound);
                 }
             }
             if(Input.GetKeyDown(KeyCode.Mouse2))

@@ -2346,7 +2346,7 @@ MonoBehaviour:
   JammedTaskText: 'Jammed: '
   JamShieldedTaskText: 'Jam Shielded: '
   ButterSkipStepTaskText: 'Sacrifice sandwiches: '
-  AllButterIsShieldedTaskText: 'Shield all peanut butter: '
+  AllButterIsShieldedTaskText: Shield all peanut butter
   MaxJamPointTaskText: 'Max Jam Points: '
 --- !u!1 &4090589798997987973
 GameObject:
