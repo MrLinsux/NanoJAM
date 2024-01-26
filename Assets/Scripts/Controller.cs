@@ -16,12 +16,18 @@ public class Controller : MonoBehaviour
     GameObject gameOverPanel;
     [SerializeField]
     GameObject levelCompletePanel;
+    AudioSource _audio;
     string LevelName { get { return SceneManager.GetActiveScene().name; } }
     public bool IsGameOver { get { return isGameOver; } }
+
+    void ChangeSoundVolume(float val) => _audio.volume = val;
 
     private void Awake()
     {
         map.Init();
+        _audio = GetComponent<AudioSource>();
+        SettingPanel.AddListenerToSoundVoulumeChanged(ChangeSoundVolume);
+        _audio.volume = SettingPanel.GetSoundPrefs();
     }
 
     public void GameOver()
@@ -75,5 +81,9 @@ public class Controller : MonoBehaviour
     public void PlaySound()
     {
         GetComponent<AudioSource>().Play();
+    }
+    private void OnDestroy()
+    {
+        SettingPanel.RemoveListenerFromSoundVoulumeChanged(ChangeSoundVolume);
     }
 }
