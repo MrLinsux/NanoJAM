@@ -1583,6 +1583,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 130086755880728614, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -98.930664
+      objectReference: {fileID: 0}
+    - target: {fileID: 130086755880728614, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 26.550781
+      objectReference: {fileID: 0}
     - target: {fileID: 431120089302347617, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1698,6 +1706,10 @@ PrefabInstance:
     - target: {fileID: 1832222642873108463, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
       propertyPath: m_PlaneDistance
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2137417208474862711, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 26.099998
       objectReference: {fileID: 0}
     - target: {fileID: 2142569343883417318, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1871,6 +1883,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8551545004617060411, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -35.978027
+      objectReference: {fileID: 0}
     - target: {fileID: 8797754461248244108, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1886,6 +1902,10 @@ PrefabInstance:
     - target: {fileID: 8797754461248244108, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8871911541151898619, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 9127194111810690591, guid: 06ecd75783fe87c4eb90c5096e455c8b, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2144,8 +2164,8 @@ MonoBehaviour:
   NeedButterSkipSteps: -1
   AllButterIsShielded: 1
   NeedMaxJamPoint: -1
-  maxStepsToLose: 100
-  stepsToLose: 100
+  maxStepsToLose: 99
+  stepsToLose: 99
   maxJamNumber: 1
   currentJamNumber: 1
   wave: {fileID: 2144843376}

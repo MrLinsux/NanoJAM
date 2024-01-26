@@ -58,6 +58,8 @@ MonoBehaviour:
   - {fileID: -1130820847, guid: 14ecd713a7a2b1248a1242c08ab6fe3e, type: 3}
   - {fileID: 1003196446, guid: 14ecd713a7a2b1248a1242c08ab6fe3e, type: 3}
   outlineColor: {r: 0.45093888, g: 0.7830189, b: 0.2622375, a: 1}
+  _connectSound: {fileID: 8300000, guid: 3f6ed33b678d6eb4bbe79ea9f59b3fa7, type: 3}
+  skipStepSprite: {fileID: -851053522, guid: 832eea59bb7894a4c8753330d35de386, type: 3}
   state: 1
   shield: {fileID: 8600870917031781419}
 --- !u!212 &3003580506186782635

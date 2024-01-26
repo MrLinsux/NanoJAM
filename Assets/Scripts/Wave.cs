@@ -29,8 +29,12 @@ public class Wave : MonoBehaviour
         _elapsedTime = 0f;
     }
 
+    bool isZaWarudo = false;
+    public bool IsZaWarudo { get { return isZaWarudo; } }
+
     public IEnumerator ZaWarudo()
     {
+        isZaWarudo=true;
         while (_elapsedTime < Duration)
         {
                 var progress = _elapsedTime / Duration;
@@ -75,5 +79,6 @@ public class Wave : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         _renderer.color = _renderer.color - new Color(0,0,0,1);
+        isZaWarudo = false;
     }
 }

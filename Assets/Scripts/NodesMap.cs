@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -75,6 +76,8 @@ public class NodesMap : MonoBehaviour
     int maxStepsToLose = 3;
     [SerializeField]
     int stepsToLose = 3;
+    public int MaxStepsToLose { get { return maxStepsToLose; } }
+    public int StepsToLose { get { return stepsToLose; } }
     public void StepsToLoseDecrease()
     {
         stepsToLose--;
@@ -111,7 +114,7 @@ public class NodesMap : MonoBehaviour
     public void CurrentJamPointDecrease()
     {
         CurrentJamNumber--;
-        if (currentJamNumber <= 0) NextTurn();
+        if (currentJamNumber <= 0 && !isNextTurn) NextTurn();
     }
 
 
@@ -172,8 +175,38 @@ public class NodesMap : MonoBehaviour
 
     public GraphNode SelectedNode { get { return selectedNode; } set { selectedNode = value; } }
 
+    void SetActiveTotalShield(bool isActive)
+    {
+        butterCanChangeNodes = !isActive;
+        if (isActive)
+        {
+            StartCoroutine(wave.ZaWarudo());
+            _controller.PlaySound();
+            MaxJamNumberDecrease();
+            CurrentJamPointDecrease();
+        }
+    }
+
+    IEnumerator WaitZaWarudo()
+    {
+        while(wave.IsZaWarudo)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        NextTurn();
+    }
+
+    bool isNextTurn = false;
+
     public void NextTurn()
     {
+        isNextTurn = true;
+        if(wave.IsZaWarudo)
+        {
+            StartCoroutine(WaitZaWarudo());
+            return;
+        }
+
         if(IsWin)
         {
             _controller.LevelIsComplete();
@@ -192,24 +225,12 @@ public class NodesMap : MonoBehaviour
             LivingStepsIncrease();
         SetActiveTotalShield(false);
         Debug.Log("Next Turn");
+        isNextTurn = false;
     }
 
-    void SetActiveTotalShield(bool isActive)
-    {
-        butterCanChangeNodes = !isActive;
-        if (isActive)
-        {
-            StartCoroutine(wave.ZaWarudo());
-            _controller.PlaySound();
-            MaxJamNumberDecrease();
-            CurrentJamPointDecrease();
-        }
-    }
-
-    public void ButterTurn()
+    void ButterTurn()
     {
         bool canChangeAnyNode = false;
-        //bool haveWayToToaster = false;
         var butterNodes = new List<GraphNode>();
         for(int i = 0; i < nodes.Length; i++)
         {
@@ -229,6 +250,10 @@ public class NodesMap : MonoBehaviour
         if(!canChangeAnyNode)
         {
             StepsToLoseDecrease();
+        }
+        else
+        {
+            ResetLoseProgression();
         }
     }
 
@@ -253,7 +278,7 @@ public class NodesMap : MonoBehaviour
         DrawGraph();
         stepsToLose = maxStepsToLose;
         _taskPanel = GameObject.Find("TaskPanel").GetComponent<TaskPanel>();
-        _taskPanel.Init(NeedJammed, NeedJamShieled, NeedButterSkipSteps, AllButterIsShielded, NeedMaxJamPoint);
+        _taskPanel.Init(NeedJammed, NeedJamShieled, NeedButterSkipSteps, !AllButterIsShielded, NeedMaxJamPoint);
         _nodeHintPanel = GameObject.Find("MouseHintPanel").GetComponent<NodeChangeHint>();
     }
 
@@ -297,6 +322,10 @@ public class NodesMap : MonoBehaviour
                     SetActiveTotalShield(true);
                     _nodeHintPanel.HideLeftHint();
                 }
+                else if(Input.GetKeyDown(KeyCode.Mouse1) && !isNextTurn)
+                {
+                    NextTurn();
+                }
             }
             if(Input.GetKeyDown(KeyCode.Mouse2))
             {
@@ -319,10 +348,6 @@ public class NodesMap : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            NextTurn();
-        }
 
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -361,6 +386,8 @@ public class NodesMap : MonoBehaviour
             DrawGraph();
             CurrentJamPointDecrease();
         }
+
+        node.PlayConnectionSound();
     }
 
     public GraphNode GetNode(int i)

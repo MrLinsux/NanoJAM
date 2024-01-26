@@ -16,8 +16,13 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     [SerializeField]
     UnityEngine.Color outlineColor;
     AudioSource _audio;
+    [SerializeField]
+    AudioClip _connectSound;
 
     public int NodeIndex { get { return _map.GetNodeIndex(this); } }
+
+    [SerializeField]
+    Sprite skipStepSprite;
 
     [SerializeField]
     private NodeStates state;
@@ -37,6 +42,8 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     NodesMap _map;
 
     void ChangeSoundVolume(float val) => _audio.volume = val;
+
+    public void PlayConnectionSound() => _audio.PlayOneShot(_connectSound);
 
     public void Init()
     {
@@ -108,8 +115,11 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             state = NodeStates.PeanutButter;
             _sprite.sprite = stateSprites[(int)state];
         }
-        SetActiveOutline(false);
-        _map.NodeHintPanel.HideAllHints();
+        if (_map.SelectedNode == this)
+        {
+            SetActiveOutline(false);
+            _map.NodeHintPanel.HideAllHints();
+        }
     }
 
     void UpdateOutline(bool outline)
@@ -137,10 +147,11 @@ public class GraphNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     switch (State)
                     {
                         case NodeStates.Toaster:
-                            if (_map.CanMakeConnections)
-                                _map.NodeHintPanel.SetUpHint();
-                            if(_map.CanMakeTotalShield)
+                            if (_map.CanMakeTotalShield)
                                 _map.NodeHintPanel.SetLeftHint(ShieldSprite);
+                            if (_map.CanMakeConnections)
+                                    _map.NodeHintPanel.SetUpHint();
+                            _map.NodeHintPanel.SetRightHint(skipStepSprite);
                             break;
                         case NodeStates.Bread:
                             if (_map.CanMakeJamSandwitch)
